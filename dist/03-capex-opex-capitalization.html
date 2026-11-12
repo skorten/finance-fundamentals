@@ -1,0 +1,1943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Capex, Opex, Capitalization</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Module 3 of Finance Fundamentals for SEs: capex, opex, capitalized software and amortization, with Datadog as the running example.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* =====================================================================
+   Finance Fundamentals for SEs: deck design system
+   ---------------------------------------------------------------------
+   Layout concept: a fixed 1600 x 900 "ledger page" per slide, scaled to
+   fit the viewport. Generous margins, one idea per slide, numbers set
+   large in a grotesk display face, mono for labels and figures.
+   Every color, font, size and spacing value is a token on :root.
+   Component rules only ever read tokens. Never hard code a color.
+   ===================================================================== */
+
+:root {
+  /* ---- Brand palette (observed on cloudzero.com unless noted) ---- */
+  --cz-orange: #FE552E;        /* observed: --wp--preset--color--cz-orange */
+  --cz-orange-deep: #C54F34;   /* observed in main-v2.min.css (hover/darker orange) */
+  --cz-teal: #006884;          /* observed: deep-teal */
+  --cz-signal: #4599AC;        /* observed: signal-blue */
+  --cz-ice: #B7FDFF;           /* observed: insight-ice */
+  --cz-sand: #EAE7E1;          /* observed: warm-sand */
+  --cz-paper: #F5F3F1;         /* observed: neutral-lightest */
+  --cz-linen: #EBE7E1;         /* observed: neutral-lighter */
+  --cz-graphite: #403E3F;      /* observed: neutral-dark */
+  --cz-stone: #8C8B8C;         /* observed: neutral */
+  --cz-mist: #B3B3B2;          /* observed: neutral-light */
+  --cz-ink: #141414;           /* observed: black-btn */
+
+  /* ---- Role tokens: light theme (primary look) ---- */
+  --page-bg: var(--cz-sand);          /* letterbox around the slide */
+  --slide-bg: #FFFFFF;
+  --surface: var(--cz-paper);         /* cards, tokens, panels */
+  --surface-2: var(--cz-linen);       /* pressed / secondary panels */
+  --line: #DDD8D0;                    /* approximated hairline from the sand family */
+  --line-strong: #C9C3BA;             /* approximated */
+  --ink: var(--cz-ink);               /* headlines and body */
+  --ink-2: var(--cz-graphite);        /* secondary text */
+  --ink-3: #6B6869;                   /* approximated: muted text, 5.5:1 on white */
+  --accent: var(--cz-orange);         /* graphics, big numbers, rules (not small text) */
+  --accent-ink: var(--cz-orange-deep);/* orange for text under 24px, 4.6:1 on white */
+  --accent-soft: #FFE6DE;             /* approximated tint */
+  --on-accent: #141414;               /* text on orange fills */
+  --teal: var(--cz-teal);
+  --teal-soft: #DDEFF3;               /* approximated tint */
+  --focus: var(--cz-teal);
+
+  /* Dark slide palette (title, divider, any .slide--dark) */
+  --dark-bg: var(--cz-ink);
+  --dark-surface: #222120;            /* approximated */
+  --dark-line: #34312F;               /* approximated */
+  --dark-ink: var(--cz-paper);
+  --dark-ink-2: var(--cz-mist);
+  --dark-ink-3: #9C9894;              /* approximated */
+  --dark-accent: var(--cz-orange);
+  --dark-accent-ink: #FF7A5C;         /* approximated, 6.7:1 on dark-bg */
+  --dark-highlight: var(--cz-ice);
+
+  /* Evidence and status (semantic, never reused as series colors) */
+  --ok: #1F7A3D;        --ok-soft: #E1F2E6;      /* approximated */
+  --caution: #8A5300;   --caution-soft: #FFF0D1; /* approximated */
+  --infer: var(--cz-teal); --infer-soft: var(--teal-soft);
+  --risk: #B3261E;      --risk-soft: #FBE4E2;    /* approximated */
+
+  /* Data viz (validated with the dataviz palette checker, light surface) */
+  --viz-1: #00739A;        /* totals / primary series: brand teal stepped up for chroma */
+  --viz-2: var(--cz-orange);/* decreases / contrast series */
+  --viz-3: var(--cz-signal);/* tertiary, use with direct labels only */
+  --viz-muted: var(--cz-mist);
+  --viz-grid: #ECE8E2;
+  --viz-axis: var(--cz-stone);
+  --viz-label: var(--ink-2);
+
+  /* ---- Type ---- */
+  --font-display: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Type scale, in slide pixels (the slide is always 1600 x 900) */
+  --fs-mega: 280px;    /* the one big number */
+  --fs-hero: 108px;    /* title slide, divider */
+  --fs-h1: 64px;       /* slide headline */
+  --fs-h2: 44px;       /* quote, question, formula tokens */
+  --fs-h3: 32px;       /* card titles */
+  --fs-lead: 30px;     /* bullets, lede */
+  --fs-body: 24px;     /* card body */
+  --fs-small: 20px;    /* captions, chart labels */
+  --fs-label: 17px;    /* eyebrows, badges (mono uppercase) */
+  --fs-micro: 15px;    /* footer, source lines */
+
+  --lh-tight: 1.04;
+  --lh-snug: 1.2;
+  --lh-body: 1.4;
+  --tracking-display: -0.03em;
+  --tracking-label: 0.12em;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Spacing (8px base) ---- */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 48px;
+  --sp-6: 64px;
+  --sp-7: 96px;
+  --sp-8: 128px;
+
+  /* ---- Slide geometry ---- */
+  --slide-w: 1600px;
+  --slide-h: 900px;
+  --slide-pad-x: 112px;
+  --slide-pad-top: 88px;
+  --footer-h: 72px;
+  --slide-pad-bottom: calc(var(--footer-h) + var(--sp-4));
+  --radius-s: 6px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --icon-stroke: 1.6;
+  --shadow-card: 0 1px 0 rgba(20, 20, 20, 0.04);
+  --ui-h: 52px;          /* screen-only control bar under the slide */
+  --ui-bg: rgba(255, 255, 255, 0.72);
+  --ui-ink: var(--ink-2);
+}
+
+/* ---- Dark mode: system setting, unless the viewer chose light ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page-bg: #0B0B0B;
+    --slide-bg: #1A1918;
+    --surface: #242221;
+    --surface-2: #2D2B29;
+    --line: #383533;
+    --line-strong: #4A4643;
+    --ink: #F5F3F1;
+    --ink-2: #D2CEC9;
+    --ink-3: #A19E9B;
+    --accent: #FF6A47;
+    --accent-ink: #FF8A6E;
+    --accent-soft: #3A2019;
+    --on-accent: #141414;
+    --teal: #5CC0D8;
+    --teal-soft: #12313A;
+    --focus: #5CC0D8;
+    --dark-bg: #0C2129;
+    --dark-surface: #12303A;
+    --dark-line: #1E4250;
+    --dark-ink: #F5F3F1;
+    --dark-ink-2: #BFD0D4;
+    --dark-ink-3: #8FA6AC;
+    --dark-accent: #FF6A47;
+    --dark-accent-ink: #FF8A6E;
+    --dark-highlight: #B7FDFF;
+    --ok: #6CCB8A;      --ok-soft: #173322;
+    --caution: #F2B65A; --caution-soft: #3A2A10;
+    --infer: #5CC0D8;   --infer-soft: #12313A;
+    --risk: #FF8A80;    --risk-soft: #3D1A18;
+    --viz-1: #2A9BBF;
+    --viz-2: #F0532C;
+    --viz-3: #7FB3C2;
+    --viz-muted: #5E5A57;
+    --viz-grid: #2C2A28;
+    --viz-axis: #8C8885;
+    --viz-label: #D2CEC9;
+    --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.3);
+    --ui-bg: rgba(26, 25, 24, 0.8);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg: #0B0B0B;
+  --slide-bg: #1A1918;
+  --surface: #242221;
+  --surface-2: #2D2B29;
+  --line: #383533;
+  --line-strong: #4A4643;
+  --ink: #F5F3F1;
+  --ink-2: #D2CEC9;
+  --ink-3: #A19E9B;
+  --accent: #FF6A47;
+  --accent-ink: #FF8A6E;
+  --accent-soft: #3A2019;
+  --on-accent: #141414;
+  --teal: #5CC0D8;
+  --teal-soft: #12313A;
+  --focus: #5CC0D8;
+  --dark-bg: #0C2129;
+  --dark-surface: #12303A;
+  --dark-line: #1E4250;
+  --dark-ink: #F5F3F1;
+  --dark-ink-2: #BFD0D4;
+  --dark-ink-3: #8FA6AC;
+  --dark-accent: #FF6A47;
+  --dark-accent-ink: #FF8A6E;
+  --dark-highlight: #B7FDFF;
+  --ok: #6CCB8A;      --ok-soft: #173322;
+  --caution: #F2B65A; --caution-soft: #3A2A10;
+  --infer: #5CC0D8;   --infer-soft: #12313A;
+  --risk: #FF8A80;    --risk-soft: #3D1A18;
+  --viz-1: #2A9BBF;
+  --viz-2: #F0532C;
+  --viz-3: #7FB3C2;
+  --viz-muted: #5E5A57;
+  --viz-grid: #2C2A28;
+  --viz-axis: #8C8885;
+  --viz-label: #D2CEC9;
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --ui-bg: rgba(26, 25, 24, 0.8);
+}
+
+/* =====================================================================
+   Page and stage
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+[hidden] { display: none !important; }
+
+.deck {
+  position: fixed;
+  inset: 0;
+  padding-top: max(16px, env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--ui-h) + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow: hidden;
+}
+.deck__viewport { position: relative; width: 100%; height: 100%; }
+
+/* =====================================================================
+   Slide base
+   ===================================================================== */
+.slide {
+  --_bg: var(--slide-bg);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  margin-left: calc(var(--slide-w) / -2);
+  margin-top: calc(var(--slide-h) / -2);
+  transform: scale(var(--deck-scale, 1));
+  transform-origin: 50% 50%;
+  display: none;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom);
+  background: var(--_bg);
+  color: var(--ink);
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 30px 80px -40px rgba(20, 20, 20, 0.35);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.slide.is-active { display: flex; }
+.deck:not(.is-ready) .slide:first-child { display: flex; }
+
+/* Dark variant: redefines role tokens locally so every component adapts. */
+.slide--dark, .slide--title, .slide--divider {
+  --_bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --surface-2: var(--dark-surface);
+  --line: var(--dark-line);
+  --line-strong: var(--dark-line);
+  --ink: var(--dark-ink);
+  --ink-2: var(--dark-ink-2);
+  --ink-3: var(--dark-ink-3);
+  --accent: var(--dark-accent);
+  --accent-ink: var(--dark-accent-ink);
+  --viz-label: var(--dark-ink-2);
+  --viz-grid: var(--dark-line);
+  background-color: var(--_bg);
+  /* ledger rules: faint vertical column lines, a nod to the spreadsheet */
+  background-image: repeating-linear-gradient(90deg, transparent 0 199px, var(--dark-line) 199px 200px);
+  background-position: 112px 0;
+}
+
+/* =====================================================================
+   Type primitives
+   ===================================================================== */
+.slide h1, .slide h2, .slide h3, .slide p, .slide ul, .slide ol, .slide figure, .slide blockquote { margin: 0; }
+.slide ul, .slide ol { padding: 0; list-style: none; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+  max-width: 30ch;
+  text-wrap: balance;
+}
+.split .headline { max-width: 16ch; }
+.headline em, .hero em { font-style: normal; color: var(--accent); }
+.lede {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+.source {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+}
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+.bullets { display: flex; flex-direction: column; gap: var(--sp-3); }
+.bullets li {
+  position: relative;
+  padding-left: 40px;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+  max-width: 30ch;
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.bullets strong { color: var(--ink); font-weight: var(--fw-semibold); }
+
+.slide__head { display: flex; flex-direction: column; gap: var(--sp-3); }
+/* The body fills the space under the head; content sits vertically centered at its natural height. */
+.slide__body { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; }
+
+/* =====================================================================
+   Icons (sprite injected by deck.js; use <svg class="icon"><use href="#i-doc"/></svg>)
+   ===================================================================== */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+.icon-tile {
+  display: inline-grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-m);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 40px;
+  flex: none;
+}
+.icon-tile--teal { background: var(--teal-soft); color: var(--teal); }
+.icon-tile--plain { background: var(--_bg, var(--slide-bg)); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.icon-tile--lg { width: 96px; height: 96px; font-size: 52px; border-radius: var(--radius-l); }
+
+/* =====================================================================
+   Evidence badges: Confirmed / Unconfirmed / Inference
+   ===================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 8px 16px 8px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.badge .icon { font-size: 22px; stroke-width: 2; }
+.badge--confirmed { background: var(--ok-soft); color: var(--ok); }
+.badge--unconfirmed { background: var(--caution-soft); color: var(--caution); }
+.badge--inference { background: var(--infer-soft); color: var(--infer); }
+
+.evidence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); width: 100%; }
+.evidence .card { gap: var(--sp-3); padding: var(--sp-5) var(--sp-4); }
+
+/* =====================================================================
+   Cards (shared)
+   ===================================================================== */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  min-width: 0;
+}
+.card__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.015em;
+  line-height: var(--lh-snug);
+  color: var(--ink);
+}
+.card__text { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink-2); }
+
+/* =====================================================================
+   Footer (injected by deck.js into every slide)
+   ===================================================================== */
+.slide__footer {
+  position: absolute;
+  left: var(--slide-pad-x);
+  right: var(--slide-pad-x);
+  bottom: 0;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--ink-3);
+}
+.slide__brand { display: flex; align-items: center; gap: var(--sp-2); }
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.slide__brand-sep { width: 1px; height: 18px; background: var(--line-strong); }
+.slide__meta { display: flex; align-items: center; gap: var(--sp-3); }
+.slide__page { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+/* =====================================================================
+   1. Title slide (dark)
+   ===================================================================== */
+.slide--title { justify-content: space-between; gap: var(--sp-4); }
+.slide--title .title__module {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.slide--title .title__module b {
+  color: var(--accent);
+  font-weight: var(--fw-medium);
+}
+.hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  max-width: 13ch;
+  text-wrap: balance;
+}
+.title__promise {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+  max-width: 36ch;
+}
+.title__meta { display: flex; align-items: center; gap: var(--sp-4); }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.chip .icon { font-size: 24px; color: var(--accent); }
+.title__main { display: flex; flex-direction: column; gap: var(--sp-4); }
+
+/* =====================================================================
+   2. Agenda / learning goals (3 icon cards max)
+   ===================================================================== */
+.goals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); width: 100%; }
+.goals .card { padding: var(--sp-5) var(--sp-4); gap: var(--sp-3); }
+.goals .card__text { max-width: 22ch; }
+.goals .icon-tile { margin-bottom: var(--sp-3); }
+
+/* =====================================================================
+   3. Section divider (dark)
+   ===================================================================== */
+.slide--divider { justify-content: center; gap: var(--sp-4); }
+.divider__part {
+  position: absolute;
+  right: var(--slide-pad-x);
+  bottom: calc(var(--footer-h) + var(--sp-3));
+  font-family: var(--font-display);
+  font-size: 320px;
+  font-weight: var(--fw-medium);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+  opacity: 0.9;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.slide--divider .lede { max-width: 30ch; }
+
+/* =====================================================================
+   4. Big number / stat
+   ===================================================================== */
+.slide--stat { justify-content: space-between; }
+.stat { display: flex; align-items: flex-end; gap: var(--sp-6); }
+.stat__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-mega);
+  font-weight: var(--fw-semibold);
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.stat__value small { font-size: 0.45em; color: var(--accent); letter-spacing: -0.03em; margin-left: 0.04em; }
+.stat__label {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 14ch;
+  padding-bottom: 12px;
+  text-wrap: balance;
+}
+/* Optional share-of-whole meter under the big number. Set --pct on .meter. */
+.meter { display: flex; flex-direction: column; gap: var(--sp-2); width: 100%; }
+.meter__track {
+  display: flex;
+  height: 28px;
+  gap: 4px;
+}
+.meter__fill { flex: 0 0 calc(var(--pct, 50) * 1%); background: var(--accent); border-radius: 6px; }
+.meter__rest { flex: 1 1 auto; background: var(--surface-2); border-radius: 6px; }
+.meter__labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.stat__foot { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+/* =====================================================================
+   5. Concept + illustration
+   ===================================================================== */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--sp-6); align-items: center; flex: 1 1 auto; min-height: 0; }
+.split__text { display: flex; flex-direction: column; gap: var(--sp-5); min-width: 0; }
+.illo { margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; height: 100%; justify-content: center; }
+.illo svg, .viz svg { display: block; width: 100%; height: auto; max-height: 100%; overflow: visible; }
+.illo figcaption, .viz figcaption { font-size: var(--fs-small); color: var(--ink-3); }
+
+/* SVG drawing classes, shared by illustrations, diagrams and charts */
+.svg-ink { fill: var(--ink); }
+.svg-ink-2 { fill: var(--ink-2); }
+.svg-ink-3 { fill: var(--ink-3); }
+.svg-stroke { stroke: var(--ink); fill: none; }
+.svg-stroke-2 { stroke: var(--ink-3); fill: none; }
+.svg-line { stroke: var(--line-strong); fill: none; }
+.svg-surface { fill: var(--surface); }
+.svg-surface-2 { fill: var(--surface-2); }
+.svg-bg { fill: var(--_bg, var(--slide-bg)); }
+.svg-accent { fill: var(--accent); }
+.svg-accent-soft { fill: var(--accent-soft); }
+.svg-accent-stroke { stroke: var(--accent); fill: none; }
+.svg-teal { fill: var(--viz-1); }
+.svg-teal-soft { fill: var(--teal-soft); }
+.svg-teal-stroke { stroke: var(--viz-1); fill: none; }
+.svg-label { font-family: var(--font-body); font-size: 20px; fill: var(--viz-label); }
+.svg-label-strong { font-family: var(--font-display); font-size: 24px; font-weight: 600; fill: var(--ink); }
+.svg-mono { font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.08em; fill: var(--ink-3); }
+
+/* =====================================================================
+   6. Comparison / versus
+   ===================================================================== */
+.versus { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: var(--sp-4); align-items: stretch; width: 100%; }
+.versus__side { padding: var(--sp-5); gap: var(--sp-3); }
+.versus__side .icon-tile { margin-bottom: var(--sp-1); }
+.versus__head { display: flex; align-items: center; gap: var(--sp-3); }
+.versus__mini { margin: var(--sp-1) 0 0; color: var(--ink-3); }
+.versus__mini svg { display: block; width: 100%; height: auto; }
+.versus__vs {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--_bg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+}
+.versus__side--b { background: var(--teal-soft); }
+.versus__side--b .icon-tile { background: var(--_bg, var(--slide-bg)); }
+.versus__side--b .card__text { color: var(--ink-2); }
+
+/* =====================================================================
+   7. Flow / process diagram
+   ===================================================================== */
+.flow { display: flex; align-items: stretch; width: 100%; gap: 0; align-self: center; }
+.flow__step {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+}
+.flow__step--key { background: var(--accent-soft); }
+.flow__step--key .icon-tile { background: var(--accent); color: var(--on-accent); }
+.flow__step .icon-tile { margin-bottom: var(--sp-2); width: 64px; height: 64px; font-size: 34px; }
+.flow__title { font-family: var(--font-display); font-size: 28px; font-weight: var(--fw-semibold); letter-spacing: -0.015em; line-height: var(--lh-snug); color: var(--ink); }
+.flow__text { font-size: var(--fs-small); line-height: var(--lh-body); color: var(--ink-2); }
+.flow__arrow {
+  flex: 0 0 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--ink-3);
+}
+.flow__arrow svg { width: 72px; height: 24px; overflow: visible; }
+.flow__arrow-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.25;
+  color: var(--ink-3);
+  max-width: 90px;
+}
+
+/* =====================================================================
+   8. Chart slide (waterfall / bars, inline SVG)
+   ===================================================================== */
+.chart-layout { align-self: stretch; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); gap: var(--sp-6); align-items: stretch; width: 100%; height: 100%; min-height: 0; }
+.viz { margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; min-height: 0; }
+/* Charts fill the space left under the headline; the viewBox keeps proportions. */
+.chart-layout .viz svg { flex: 1 1 0; min-height: 0; height: 100%; }
+.viz .bar { transition: opacity 0.15s ease; }
+.viz svg:hover .bar { opacity: 0.55; }
+.viz svg:hover .bar:hover { opacity: 1; }
+.viz-grid { stroke: var(--viz-grid); stroke-width: 1; }
+.viz-axis { stroke: var(--viz-axis); stroke-width: 1.5; }
+.viz-connector { stroke: var(--viz-axis); stroke-width: 1.5; stroke-dasharray: 4 5; }
+.viz-tick { font-family: var(--font-mono); font-size: 16px; fill: var(--ink-3); }
+.viz-cat { font-family: var(--font-body); font-size: 20px; font-weight: 500; fill: var(--ink-2); }
+.viz-value { font-family: var(--font-display); font-size: 26px; font-weight: 600; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.viz-total { fill: var(--viz-1); }
+.viz-decrease { fill: var(--viz-2); }
+.viz-increase { fill: var(--viz-3); }
+.viz-muted { fill: var(--viz-muted); }
+.callout { display: flex; flex-direction: column; justify-content: center; gap: var(--sp-3); padding-left: var(--sp-4); border-left: 1px solid var(--line); }
+.callout__value { font-family: var(--font-display); font-size: 120px; font-weight: var(--fw-semibold); letter-spacing: -0.05em; line-height: 0.9; color: var(--ink); font-variant-numeric: tabular-nums; }
+.callout__label { font-size: var(--fs-body); color: var(--ink-2); line-height: var(--lh-snug); max-width: 14ch; }
+.legend { display: flex; flex-wrap: wrap; gap: var(--sp-3); font-size: var(--fs-small); color: var(--ink-2); }
+.legend__item { display: inline-flex; align-items: center; gap: 10px; }
+.legend__swatch { width: 16px; height: 16px; border-radius: 4px; background: var(--viz-1); }
+.legend__swatch--decrease { background: var(--viz-2); }
+.legend__swatch--increase { background: var(--viz-3); }
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* =====================================================================
+   9. Equation / formula
+   ===================================================================== */
+.slide--formula .slide__body { flex-direction: column; align-items: stretch; justify-content: center; gap: var(--sp-6); }
+.formula { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
+.formula__term {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.formula__term--result { background: var(--ink); color: var(--_bg); }
+.formula__term--teal { background: var(--teal-soft); color: var(--teal); }
+.formula__term--accent { background: var(--accent-soft); color: var(--accent-ink); }
+.formula__op {
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: var(--fw-regular);
+  line-height: 1;
+  color: var(--accent);
+  padding: 0 4px;
+}
+.formula__paren { font-family: var(--font-display); font-size: 88px; font-weight: 200; line-height: 1; color: var(--ink-3); }
+.worked {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+.worked__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3); font-family: var(--font-mono); font-size: 40px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.worked__row .op { color: var(--accent); }
+.worked__row .result { font-family: var(--font-display); font-weight: var(--fw-semibold); font-size: 56px; color: var(--ink); letter-spacing: -0.03em; }
+.worked__note { font-size: var(--fs-small); color: var(--ink-3); }
+
+/* =====================================================================
+   10. Quote / "How a CFO hears it"
+   ===================================================================== */
+.hears { display: grid; grid-template-columns: minmax(0, 4fr) 96px minmax(0, 7fr); gap: var(--sp-3); align-items: center; width: 100%; }
+.hears__say { padding: var(--sp-5) var(--sp-4); gap: var(--sp-3); }
+.hears__say .card__text { font-size: var(--fs-lead); line-height: var(--lh-snug); color: var(--ink-2); }
+.hears__who { display: flex; align-items: center; gap: var(--sp-2); font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--ink-3); }
+.hears__who .icon { font-size: 28px; color: var(--ink-2); }
+.hears__arrow { color: var(--accent); display: grid; place-items: center; }
+.hears__arrow svg { width: 80px; height: 32px; }
+.hears__cfo { display: flex; flex-direction: column; gap: var(--sp-4); }
+.hears__cfo .hears__who { color: var(--accent-ink); }
+.hears__cfo .hears__who .icon { color: var(--accent); }
+.quote {
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: var(--fw-medium);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  text-wrap: balance;
+  max-width: 20ch;
+}
+.quote::before { content: "\201C"; color: var(--accent); }
+.quote::after { content: "\201D"; color: var(--accent); }
+
+/* =====================================================================
+   11. Key terms (max 6 cards)
+   ===================================================================== */
+.terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); width: 100%; align-content: start; }
+.term { padding: var(--sp-4); gap: var(--sp-2); }
+.term__name { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-size: 30px; font-weight: var(--fw-semibold); letter-spacing: -0.015em; color: var(--ink); line-height: 1.1; }
+.term__name .icon { font-size: 30px; color: var(--accent); }
+.term__def { font-size: 21px; line-height: 1.38; color: var(--ink-2); }
+
+/* =====================================================================
+   12. Customer story
+   ===================================================================== */
+.story { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--sp-6); width: 100%; align-items: stretch; }
+.story__main { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; justify-content: center; }
+.story__customer { display: flex; align-items: center; gap: var(--sp-3); }
+.story__name { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: var(--fw-semibold); color: var(--ink); line-height: 1.1; }
+.story__sector { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.story__quote { font-family: var(--font-display); font-size: 40px; font-weight: var(--fw-medium); line-height: 1.18; letter-spacing: -0.02em; color: var(--ink); max-width: 22ch; text-wrap: balance; }
+.story__metrics { display: flex; flex-direction: column; gap: var(--sp-3); justify-content: center; }
+.metric { padding: var(--sp-4); border-radius: var(--radius-l); background: var(--surface); display: grid; grid-template-columns: 250px minmax(0, 1fr); align-items: baseline; gap: var(--sp-3); }
+.metric__value { font-family: var(--font-display); font-size: 76px; font-weight: var(--fw-semibold); letter-spacing: -0.045em; line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.metric__value--accent { color: var(--accent); }
+.metric__label { font-size: var(--fs-small); line-height: 1.3; color: var(--ink-2); }
+
+/* =====================================================================
+   13. Self-check with reveal
+   ===================================================================== */
+.slide--check .slide__body { flex-direction: column; align-items: stretch; justify-content: center; gap: var(--sp-4); }
+.question { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--fw-semibold); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); max-width: 36ch; text-wrap: balance; }
+.options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.option { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-3); border-radius: var(--radius-m); border: 1px solid var(--line-strong); font-size: var(--fs-body); color: var(--ink); line-height: 1.3; }
+.option__key { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--surface-2); font-family: var(--font-mono); font-size: 18px; color: var(--ink-2); }
+.answer {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius-l);
+  background: var(--ok-soft);
+  color: var(--ink);
+  min-height: 132px;
+}
+.answer .icon { font-size: 40px; color: var(--ok); stroke-width: 2; }
+.answer__text { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink); max-width: 56ch; }
+.answer__text strong { font-weight: var(--fw-semibold); }
+.answer:not(.is-revealed) > :not(.answer__cover) { visibility: hidden; }
+.answer__cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border: 2px dashed var(--line-strong);
+  border-radius: inherit;
+  background: var(--slide-bg);
+  color: var(--ink-2);
+  font: var(--fw-medium) var(--fs-body)/1.2 var(--font-body);
+  cursor: pointer;
+}
+.answer__cover kbd { font-family: var(--font-mono); font-size: 18px; padding: 4px 10px; border-radius: 6px; background: var(--surface-2); color: var(--ink); }
+.answer__cover:hover { border-color: var(--accent); color: var(--ink); }
+.answer__cover:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.answer.is-revealed .answer__cover { display: none; }
+/* Mark the right option with .is-correct; it lights up only once revealed. */
+.slide.is-revealed .option.is-correct { border-color: var(--ok); background: var(--ok-soft); }
+.slide.is-revealed .option.is-correct .option__key { background: var(--ok); color: var(--slide-bg); }
+
+/* =====================================================================
+   14. Timeline / 12 month calendar strip
+   ===================================================================== */
+.timeline { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 6px; row-gap: 12px; width: 100%; align-self: center; }
+.timeline__q {
+  grid-column: span 3;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--line-strong);
+}
+.timeline__month {
+  display: flex;
+  align-items: flex-end;
+  height: 120px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: var(--fw-semibold);
+  color: var(--ink-2);
+}
+.timeline__month--hot { background: var(--accent); color: var(--on-accent); }
+.timeline__month--warm { background: var(--accent-soft); color: var(--accent-ink); }
+.timeline__month--cool { background: var(--teal-soft); color: var(--teal); }
+.timeline__band {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+  background: var(--surface);
+  min-width: 0;
+}
+.timeline__band--teal { border-left-color: var(--viz-1); }
+.timeline__band--ink { border-left-color: var(--ink); }
+.timeline__band b { font-family: var(--font-display); font-size: 24px; font-weight: var(--fw-semibold); color: var(--ink); letter-spacing: -0.01em; }
+.timeline__band span { font-size: 18px; color: var(--ink-2); line-height: 1.3; }
+
+/* =====================================================================
+   15. Resources (link cards, max 4)
+   ===================================================================== */
+.links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); width: 100%; align-content: start; }
+.link-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.link-card:hover { border-color: var(--accent); }
+.link-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.link-card .icon-tile { width: 64px; height: 64px; font-size: 32px; }
+.link-card__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.link-card__source { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); }
+.link-card__title { font-family: var(--font-display); font-size: 28px; font-weight: var(--fw-semibold); letter-spacing: -0.015em; line-height: 1.15; color: var(--ink); }
+.link-card__desc { font-size: 19px; line-height: 1.35; color: var(--ink-2); }
+.link-card__go { font-size: 28px; color: var(--ink-3); }
+
+/* =====================================================================
+   16. Recap / takeaways + companion pointer
+   ===================================================================== */
+.recap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--sp-6); width: 100%; align-items: center; }
+.takeaways { display: flex; flex-direction: column; gap: var(--sp-4); }
+.takeaway { display: flex; align-items: center; gap: var(--sp-3); font-family: var(--font-display); font-size: 36px; font-weight: var(--fw-medium); letter-spacing: -0.02em; line-height: 1.15; color: var(--ink); }
+.takeaway .icon-tile { width: 60px; height: 60px; font-size: 32px; }
+.companion { padding: var(--sp-5) var(--sp-4); gap: var(--sp-3); background: var(--ink); color: var(--_bg); }
+.companion .card__title { color: var(--_bg); }
+.companion .card__text { color: var(--_bg); opacity: 0.8; }
+.companion .icon-tile { background: var(--accent); color: var(--on-accent); }
+.companion__cta { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+/* =====================================================================
+   Screen-only deck UI: progress bar, nav buttons, counter
+   ===================================================================== */
+.deck-ui {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--ui-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ui-ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  z-index: 5;
+}
+.deck-ui__progress { position: fixed; left: 0; right: 0; top: 0; height: 3px; background: transparent; z-index: 6; }
+.deck-ui__bar { height: 100%; width: 0; background: var(--cz-orange); transition: width 0.25s ease; }
+.deck-ui__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.8; }
+.deck-ui__nav { display: flex; align-items: center; gap: 8px; flex: none; }
+.deck-ui__btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--ui-bg);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+}
+.deck-ui__btn:hover { border-color: var(--accent); }
+.deck-ui__btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.deck-ui__btn:disabled { opacity: 0.35; cursor: default; }
+.deck-ui__count { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.deck-ui__hint { opacity: 0.7; }
+
+/* QA mode (used by scripts/qa.js): slide at 1:1, no chrome */
+.deck-qa .deck { padding: 0; }
+.deck-qa .deck-ui, .deck-qa .deck-ui__progress { display: none; }
+.deck-qa .slide { border-radius: 0; box-shadow: none; }
+
+@media (max-width: 640px) {
+  .deck-ui__title, .deck-ui__hint { display: none; }
+  .deck-ui { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* Slide enter animation (resting state is fully visible) */
+@media (prefers-reduced-motion: no-preference) {
+  .deck.is-ready .slide.is-active > :not(.slide__footer) { animation: deck-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+}
+@keyframes deck-rise { from { transform: translateY(10px); opacity: 0.001; } to { transform: none; opacity: 1; } }
+
+/* =====================================================================
+   Print: Ctrl+P gives one slide per landscape page, answers revealed
+   ===================================================================== */
+@page { size: 1600px 900px; margin: 0; }
+@media print {
+  html, body { height: auto; overflow: visible; background: #FFFFFF; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .deck { position: static; padding: 0; overflow: visible; }
+  .deck__viewport { height: auto; }
+  .deck-ui, .deck-ui__progress { display: none !important; }
+  .slide, .slide.is-active {
+    display: flex !important;
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 0;
+    transform: none !important;
+    border-radius: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .slide > * { animation: none !important; }
+  .answer > * { visibility: visible !important; }
+  .answer__cover { display: none !important; }
+  .link-card { border-color: var(--line); }
+  .option.is-correct { border-color: var(--ok); background: var(--ok-soft); }
+}
+
+</style>
+</head>
+<body>
+<main class="deck" data-module="Module 3 · Capex, opex, capitalization">
+
+  <!-- 1. TITLE -->
+  <section class="slide slide--title">
+    <p class="title__module"><b>Module 03</b> Finance Fundamentals for SEs</p>
+    <div class="title__main">
+      <h1 class="hero">Capex, opex and <em>capitalization</em></h1>
+      <p class="title__promise">Spot when capitalization comes up, then bring in finance.</p>
+    </div>
+    <div class="title__meta">
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>20 min</span>
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Companion doc included</span>
+    </div>
+  </section>
+
+  <!-- 2. GOALS -->
+  <section class="slide slide--agenda">
+    <header class="slide__head">
+      <p class="eyebrow">Learning goals</p>
+      <h2 class="headline">Three things you will do after this</h2>
+    </header>
+    <div class="slide__body">
+      <ul class="goals">
+        <li class="card">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <h3 class="card__title">Explain capex vs opex</h3>
+          <p class="card__text">Why cloud moved spend to opex.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+          <h3 class="card__title">Trace capitalized cost</h3>
+          <p class="card__text">Find it in a 10-K and follow it.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>
+          <h3 class="card__title">Know when to hand off</h3>
+          <p class="card__text">Name the rules. Bring in finance.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. CAPEX VS OPEX -->
+  <section class="slide slide--compare">
+    <header class="slide__head">
+      <p class="eyebrow">Capex vs opex</p>
+      <h2 class="headline">Cloud turned a purchase into a meter</h2>
+    </header>
+    <div class="slide__body">
+      <div class="versus">
+        <div class="card versus__side">
+          <div class="versus__head">
+            <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span>
+            <h3 class="card__title">Capex</h3>
+          </div>
+          <p class="card__text">Buy servers. Expense them over their useful life.</p>
+          <figure class="versus__mini">
+            <svg viewBox="0 0 520 150" role="img" aria-label="Capex drawn as a building: one purchase, then equal expense bars over five years">
+              <rect x="12" y="30" width="76" height="86" rx="4" class="svg-surface-2"/>
+              <rect x="12" y="30" width="76" height="86" rx="4" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+              <rect x="24" y="44" width="16" height="16" class="svg-accent"/>
+              <rect x="60" y="44" width="16" height="16" class="svg-accent"/>
+              <rect x="24" y="72" width="16" height="16" class="svg-accent"/>
+              <rect x="60" y="72" width="16" height="16" class="svg-accent"/>
+              <rect x="42" y="96" width="16" height="20" class="svg-accent"/>
+              <text x="50" y="142" text-anchor="middle" class="svg-mono">BUY ONCE</text>
+              <path d="M104 92h60M156 84l8 8-8 8" fill="none" class="svg-stroke-2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="196" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="256" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="316" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="376" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="436" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <text x="196" y="70" class="svg-label">Depreciation each year</text>
+              <text x="340" y="142" text-anchor="middle" class="svg-mono">YEARS 1 TO 5</text>
+            </svg>
+          </figure>
+        </div>
+        <span class="versus__vs" aria-hidden="true">vs</span>
+        <div class="card versus__side versus__side--b">
+          <div class="versus__head">
+            <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-cloud"/></svg></span>
+            <h3 class="card__title">Opex</h3>
+          </div>
+          <p class="card__text">Rent by the hour. Expense it the month you use it.</p>
+          <figure class="versus__mini">
+            <svg viewBox="0 0 520 150" role="img" aria-label="Opex drawn as a utility meter with monthly expense bars that vary with use">
+              <circle cx="52" cy="70" r="42" class="svg-surface-2"/>
+              <circle cx="52" cy="70" r="42" class="svg-teal-stroke" stroke-width="3" fill="none"/>
+              <path d="M52 70 L72 46" class="svg-stroke" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <circle cx="52" cy="70" r="5" class="svg-ink"/>
+              <text x="52" y="142" text-anchor="middle" class="svg-mono">METER</text>
+              <g class="svg-teal">
+                <rect x="140" y="80" width="22" height="36" rx="3"/>
+                <rect x="172" y="70" width="22" height="46" rx="3"/>
+                <rect x="204" y="84" width="22" height="32" rx="3"/>
+                <rect x="236" y="62" width="22" height="54" rx="3"/>
+                <rect x="268" y="72" width="22" height="44" rx="3"/>
+                <rect x="300" y="56" width="22" height="60" rx="3"/>
+                <rect x="332" y="66" width="22" height="50" rx="3"/>
+                <rect x="364" y="50" width="22" height="66" rx="3"/>
+                <rect x="396" y="60" width="22" height="56" rx="3"/>
+                <rect x="428" y="46" width="22" height="70" rx="3"/>
+                <rect x="460" y="54" width="22" height="62" rx="3"/>
+              </g>
+              <text x="140" y="30" class="svg-label">Expensed as it is used</text>
+              <text x="140" y="142" class="svg-mono">MONTH BY MONTH</text>
+            </svg>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FLOW -->
+  <section class="slide slide--flow">
+    <header class="slide__head">
+      <p class="eyebrow">Capitalization</p>
+      <h2 class="headline">Capitalized cost waits on the balance sheet</h2>
+    </header>
+    <div class="slide__body">
+      <ol class="flow" aria-label="Four steps: development cost, asset on the balance sheet, amortization, expense on the income statement">
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>
+          <span class="flow__title">Cost</span>
+          <span class="flow__text">Engineers get paid</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">approved</span>
+        </li>
+        <li class="flow__step flow__step--key">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <span class="flow__title">Asset</span>
+          <span class="flow__text">Balance sheet, not expense</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">spread</span>
+        </li>
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+          <span class="flow__title">Useful life</span>
+          <span class="flow__text">Equal share each year</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">booked</span>
+        </li>
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-chart-down"/></svg></span>
+          <span class="flow__title">P&amp;L</span>
+          <span class="flow__text">Expense hits income</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. SELF-CHECK 1 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 1 · Illustrative</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">A company capitalizes $600K of development labor. It amortizes straight-line over three years. What expense hits each year?</h2>
+      <ol class="options">
+        <li class="option"><span class="option__key">A</span>$100K</li>
+        <li class="option is-correct"><span class="option__key">B</span>$200K</li>
+        <li class="option"><span class="option__key">C</span>$600K</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>B. $200K.</strong> $600K ÷ 3 = $200K a year. After year 1 the asset is worth $400K. Expensing it would add $400K to year 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CHART -->
+  <section class="slide slide--chart">
+    <header class="slide__head">
+      <p class="eyebrow">Amortization staircase</p>
+      <h2 class="headline">The asset steps down $200K a year</h2>
+    </header>
+    <div class="slide__body">
+      <div class="chart-layout">
+        <figure class="viz">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="m3-wf-title m3-wf-desc">
+            <title id="m3-wf-title">Amortization of a $600K asset over three years</title>
+            <desc id="m3-wf-desc">Illustrative. Asset value starts at 600 thousand dollars. It falls to 400, 200 and 0 thousand at the end of years 1, 2 and 3. Each year 200 thousand moves to expense.</desc>
+            <g class="viz-grid">
+              <line x1="80" y1="60" x2="1000" y2="60"/>
+              <line x1="80" y1="200" x2="1000" y2="200"/>
+              <line x1="80" y1="340" x2="1000" y2="340"/>
+            </g>
+            <line x1="80" y1="480" x2="1000" y2="480" class="viz-axis"/>
+            <g class="viz-tick" text-anchor="end">
+              <text x="64" y="66">$600K</text>
+              <text x="64" y="206">$400K</text>
+              <text x="64" y="346">$200K</text>
+              <text x="64" y="486">$0</text>
+            </g>
+            <rect class="bar viz-total" x="128" y="60" width="150" height="420" rx="4"><title>Start: asset $600K</title></rect>
+            <rect class="bar viz-total" x="358" y="200" width="150" height="280" rx="4"><title>End of year 1: asset $400K</title></rect>
+            <rect class="bar viz-decrease" x="358" y="60" width="150" height="140" rx="4"><title>Year 1 expense: $200K</title></rect>
+            <rect class="bar viz-total" x="588" y="340" width="150" height="140" rx="4"><title>End of year 2: asset $200K</title></rect>
+            <rect class="bar viz-decrease" x="588" y="200" width="150" height="140" rx="4"><title>Year 2 expense: $200K</title></rect>
+            <rect class="bar viz-decrease" x="818" y="340" width="150" height="140" rx="4"><title>Year 3 expense: $200K</title></rect>
+            <g text-anchor="middle" style="font-family:var(--font-display);font-weight:600;font-size:26px">
+              <text x="203" y="280" style="fill:var(--slide-bg)">$600K</text>
+              <text x="433" y="346" style="fill:var(--slide-bg)">$400K</text>
+              <text x="433" y="140" class="svg-ink">$200K</text>
+              <text x="663" y="416" style="fill:var(--slide-bg)">$200K</text>
+              <text x="663" y="280" class="svg-ink">$200K</text>
+              <text x="893" y="416" class="svg-ink">$200K</text>
+            </g>
+            <g class="viz-cat" text-anchor="middle">
+              <text x="203" y="516">Start</text>
+              <text x="433" y="516">End of year 1</text>
+              <text x="663" y="516">End of year 2</text>
+              <text x="893" y="516">End of year 3</text>
+            </g>
+            <g class="viz-tick" text-anchor="middle">
+              <text x="893" y="546">asset is $0</text>
+            </g>
+          </svg>
+          <table class="sr-only">
+            <caption>Illustrative amortization of a $600K asset</caption>
+            <tr><th scope="col">Point in time</th><th scope="col">Asset value</th><th scope="col">Expense that year</th></tr>
+            <tr><td>Start</td><td>$600K</td><td>none</td></tr>
+            <tr><td>End of year 1</td><td>$400K</td><td>$200K</td></tr>
+            <tr><td>End of year 2</td><td>$200K</td><td>$200K</td></tr>
+            <tr><td>End of year 3</td><td>$0</td><td>$200K</td></tr>
+          </table>
+          <div class="legend">
+            <span class="legend__item"><span class="legend__swatch"></span>Asset left</span>
+            <span class="legend__item"><span class="legend__swatch legend__swatch--decrease"></span>Expensed that year</span>
+          </div>
+        </figure>
+        <aside class="callout">
+          <p class="eyebrow">Each year</p>
+          <p class="callout__value">$200K</p>
+          <p class="callout__label">$600K ÷ 3 years</p>
+          <p class="source">Illustrative figures</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DIVIDER -->
+  <section class="slide slide--divider">
+    <p class="eyebrow">Part 2</p>
+    <h2 class="hero">Datadog shows it in real numbers</h2>
+    <p class="lede">FY2025 Form 10-K, filed with the SEC.</p>
+    <span class="divider__part" aria-hidden="true">02</span>
+  </section>
+
+  <!-- 8. STAT -->
+  <section class="slide slide--stat">
+    <p class="eyebrow">Datadog FY2025</p>
+    <div class="stat">
+      <p class="stat__value">$85.8<small>M</small></p>
+      <p class="stat__label">of software development cost capitalized in FY2025, up from $60.8M</p>
+    </div>
+    <div class="stat__foot">
+      <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed, primary filing</span>
+      <p class="source">Source: Datadog, Inc. Form 10-K for FY2025. Cash flow statement, investing activities.</p>
+    </div>
+  </section>
+
+  <!-- 9. THREE STATEMENTS -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">One cost shows up on all three statements</h2>
+        </header>
+        <ul class="bullets">
+          <li>Cash leaves when engineers are paid</li>
+          <li>The asset stays on the balance sheet</li>
+          <li>Amortization returns it as expense</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="Datadog FY2025: 85.8 million in investing cash flow, 329.1 million gross asset on the balance sheet, then amortization in cost of revenue and sales and marketing">
+          <defs>
+            <marker id="m3-ah-stmt" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" class="svg-ink-3"/>
+            </marker>
+          </defs>
+          <rect x="16" y="16" width="608" height="122" rx="16" class="svg-surface"/>
+          <text x="40" y="52" class="svg-mono">CASH FLOW · INVESTING</text>
+          <text x="40" y="104" class="svg-label-strong" style="font-size:44px">($85.8M)</text>
+          <text x="600" y="104" text-anchor="end" class="svg-label">paid in FY2025</text>
+          <path d="M320 138 V176" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m3-ah-stmt)"/>
+          <rect x="16" y="180" width="608" height="122" rx="16" class="svg-teal-soft"/>
+          <text x="40" y="216" class="svg-mono">BALANCE SHEET · GROSS</text>
+          <text x="40" y="268" class="svg-label-strong" style="font-size:44px">$329.1M</text>
+          <text x="600" y="268" text-anchor="end" class="svg-label">at December 31</text>
+          <path d="M320 302 V340" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m3-ah-stmt)"/>
+          <rect x="16" y="344" width="608" height="122" rx="16" class="svg-accent-soft"/>
+          <text x="40" y="380" class="svg-mono">INCOME STATEMENT</text>
+          <text x="40" y="432" class="svg-label-strong" style="font-size:40px">Amortization</text>
+          <text x="600" y="432" text-anchor="end" class="svg-label">in COGS and S&amp;M</text>
+        </svg>
+        <figcaption>Datadog FY2025. The $329.1M is before accumulated amortization.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 10. USEFUL LIFE -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">A longer life means a smaller yearly charge</h2>
+        </header>
+        <ul class="bullets">
+          <li>Datadog raised useful life from two to three years</li>
+          <li>Effective FY2025, same cost</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="The same total cost drawn as two equal segments over two years, then three smaller segments over three years">
+          <text x="40" y="100" class="svg-mono">OLD LIFE · 2 YEARS</text>
+          <rect x="40" y="120" width="280" height="80" rx="8" class="svg-teal-soft"/>
+          <rect x="40" y="120" width="280" height="80" rx="8" class="svg-teal-stroke" stroke-width="2" fill="none"/>
+          <rect x="320" y="120" width="280" height="80" rx="8" class="svg-teal-soft"/>
+          <rect x="320" y="120" width="280" height="80" rx="8" class="svg-teal-stroke" stroke-width="2" fill="none"/>
+          <text x="180" y="170" text-anchor="middle" class="svg-label">Year 1</text>
+          <text x="460" y="170" text-anchor="middle" class="svg-label">Year 2</text>
+          <text x="40" y="260" class="svg-mono">NEW LIFE · 3 YEARS</text>
+          <rect x="40" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="40" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <rect x="227" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="227" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <rect x="414" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="414" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <text x="133" y="330" text-anchor="middle" class="svg-label">Year 1</text>
+          <text x="320" y="330" text-anchor="middle" class="svg-label">Year 2</text>
+          <text x="507" y="330" text-anchor="middle" class="svg-label">Year 3</text>
+          <path d="M40 400 H600 M40 390 V410 M600 390 V410" class="svg-stroke-2" stroke-width="2" fill="none"/>
+          <text x="320" y="446" text-anchor="middle" class="svg-label-strong" style="font-size:26px">Same total cost</text>
+        </svg>
+        <figcaption>Illustrative. The 10-K does not state the dollar effect.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 11. ASU 2025-06 -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">The new ASU moves the starting line</h2>
+        </header>
+        <ul class="bullets">
+          <li>Project stages are gone</li>
+          <li>Start when funded and completion is probable</li>
+          <li>Early adoption is permitted</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="Old model: expense, capitalize, expense by project stage. New model: expense until management funds the project and completion is probable, then capitalize.">
+          <text x="40" y="60" class="svg-mono">OLD MODEL · PROJECT STAGES</text>
+          <rect x="40" y="76" width="150" height="90" rx="8" class="svg-surface-2"/>
+          <rect x="190" y="76" width="220" height="90" rx="8" class="svg-teal-soft"/>
+          <rect x="410" y="76" width="190" height="90" rx="8" class="svg-surface-2"/>
+          <text x="115" y="116" text-anchor="middle" class="svg-label">Plan</text>
+          <text x="300" y="116" text-anchor="middle" class="svg-label">Build</text>
+          <text x="505" y="116" text-anchor="middle" class="svg-label">Run</text>
+          <text x="115" y="148" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="300" y="148" text-anchor="middle" class="svg-mono">CAPITALIZE</text>
+          <text x="505" y="148" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="40" y="262" class="svg-mono">NEW MODEL · ONE THRESHOLD</text>
+          <rect x="40" y="278" width="220" height="90" rx="8" class="svg-surface-2"/>
+          <rect x="260" y="278" width="340" height="90" rx="8" class="svg-accent-soft"/>
+          <text x="150" y="318" text-anchor="middle" class="svg-label">Before</text>
+          <text x="430" y="318" text-anchor="middle" class="svg-label">After</text>
+          <text x="150" y="350" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="430" y="350" text-anchor="middle" class="svg-mono">CAPITALIZE</text>
+          <path d="M260 268 V388" class="svg-accent-stroke" stroke-width="4" stroke-dasharray="8 6" fill="none"/>
+          <text x="260" y="424" text-anchor="middle" class="svg-label-strong" style="font-size:22px">Funded and probable</text>
+        </svg>
+        <figcaption>Issued Sept 2025. Effective for annual periods beginning after Dec 15, 2027.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 12. CFO -->
+  <section class="slide slide--quote">
+    <header class="slide__head">
+      <span class="badge badge--inference"><svg class="icon" aria-hidden="true"><use href="#i-inference"/></svg>Inference</span>
+      <h2 class="headline">Controllers ask whether it survives an audit</h2>
+    </header>
+    <div class="slide__body">
+      <div class="hears">
+        <div class="card hears__say">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>You hear</p>
+          <p class="card__text">“We capitalize engineering labor.”</p>
+        </div>
+        <div class="hears__arrow" aria-hidden="true">
+          <svg viewBox="0 0 80 32"><path d="M2 16h72M64 6l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <blockquote class="hears__cfo">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg>The controller asks</p>
+          <p class="quote">Which work, which project, and can we prove it?</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. HAND OFF -->
+  <section class="slide slide--compare">
+    <header class="slide__head">
+      <p class="eyebrow">Hand off to finance</p>
+      <h2 class="headline">Recognize the topic, then hand off</h2>
+    </header>
+    <div class="slide__body">
+      <div class="versus">
+        <div class="card versus__side">
+          <div class="versus__head">
+            <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+            <h3 class="card__title">You</h3>
+          </div>
+          <p class="card__text">Spot the topic. Ask questions. Bring in finance. Give no accounting advice.</p>
+        </div>
+        <span class="versus__vs" aria-hidden="true">then</span>
+        <div class="card versus__side versus__side--b">
+          <div class="versus__head">
+            <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+            <h3 class="card__title">Their finance team</h3>
+          </div>
+          <p class="card__text">Decides what to capitalize, the useful life, and whether it passes audit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. KEY TERMS -->
+  <section class="slide slide--terms">
+    <header class="slide__head">
+      <p class="eyebrow">Key terms</p>
+      <h2 class="headline">Six terms you will hear on calls</h2>
+    </header>
+    <div class="slide__body">
+      <dl class="terms">
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>Capex</dt>
+          <dd class="term__def">Spending on long lived assets, expensed gradually over their useful life.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-coins"/></svg>Opex</dt>
+          <dd class="term__def">Spending expensed in the period it happens, like a monthly cloud bill.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Capitalization</dt>
+          <dd class="term__def">Recording a cost as an asset instead of expensing it now.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>Amortization</dt>
+          <dd class="term__def">Spreading a software asset's cost over its useful life, evenly if straight-line.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>ASC 350-40</dt>
+          <dd class="term__def">US GAAP rules for software built or bought to run your own business.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>ASU 2025-06</dt>
+          <dd class="term__def">FASB update that changes when capitalizing internal-use software starts.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 15. SELF-CHECK 2 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 2 · Hypothetical</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">A company capitalizes $90M at the start of the year. How much higher is first-year operating income with a three year life than a two year life?</h2>
+      <ol class="options">
+        <li class="option is-correct"><span class="option__key">A</span>$15M</li>
+        <li class="option"><span class="option__key">B</span>$30M</li>
+        <li class="option"><span class="option__key">C</span>$45M</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>A. $15M.</strong> Two years is $45M a year. Three years is $30M. Total amortization stays $90M, spread over an extra year.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. SELF-CHECK 3 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 3</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">Which cost is possibly capitalizable, depending on company policy and finance's call?</h2>
+      <ol class="options">
+        <li class="option"><span class="option__key">A</span>Monthly production cloud bill</li>
+        <li class="option"><span class="option__key">B</span>Bug fixes in a shipped feature</li>
+        <li class="option is-correct"><span class="option__key">C</span>Salaries on an approved, funded feature</li>
+      </ol>
+      <div class="answer" data-reveal>
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>C.</strong> The cloud bill is opex. Bug fixes are usually expensed. Datadog capitalizes costs like C. Finance decides.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. RESOURCES -->
+  <section class="slide slide--resources">
+    <header class="slide__head">
+      <p class="eyebrow">Resources</p>
+      <h2 class="headline">Go deeper with these four sources</h2>
+    </header>
+    <div class="slide__body">
+      <div class="links">
+        <a class="link-card" href="https://corporatefinanceinstitute.com/resources/accounting/capex-vs-opex/" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Corporate Finance Institute</span>
+            <span class="link-card__title">CapEx vs OpEx</span>
+            <span class="link-card__desc">Plain guide to the two spending types.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://www.bakertilly.com/insights/modernizing-software-accounting-asu-2025-06" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Baker Tilly</span>
+            <span class="link-card__title">ASU 2025-06 explained</span>
+            <span class="link-card__desc">What changes and when it applies.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://dart.deloitte.com/USDART/home/codification/assets/asc350-40" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Deloitte DART</span>
+            <span class="link-card__title">ASC 350-40 guide</span>
+            <span class="link-card__desc">Free codification guide for finance readers.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://www.sec.gov/Archives/edgar/data/1561550/000162828026008819/ddog-20251231.htm" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">SEC EDGAR</span>
+            <span class="link-card__title">Datadog FY2025 10-K</span>
+            <span class="link-card__desc">See Note 2 and Note 5.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. RECAP -->
+  <section class="slide slide--recap">
+    <header class="slide__head">
+      <p class="eyebrow">Recap</p>
+      <h2 class="headline">Carry these into your next finance call</h2>
+    </header>
+    <div class="slide__body">
+      <div class="recap">
+        <ul class="takeaways">
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Tell capex from opex</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Trace capitalized cost across three statements</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Hand accounting calls to finance</li>
+        </ul>
+        <div class="card companion">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <h3 class="card__title">Companion document</h3>
+          <p class="card__text">Worked math, caveats, glossary and sources.</p>
+          <p class="companion__cta">companion.md, Module 03</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script>
+/* Finance Fundamentals for SEs: deck runtime. Zero dependencies.
+ *
+ * Markup contract (see DESIGN.md):
+ *   <main class="deck" data-module="Module 1 · The P&L">
+ *     <section class="slide slide--title"> ... </section>
+ *     ...
+ *   </main>
+ *   <script src="../../template/deck.js"><\/script>
+ *
+ * Features: 16:9 letterboxed scaling, keyboard / click / swipe navigation,
+ * progress bar and counter, #N hash per slide, reveal blocks (click or R),
+ * footer injection, icon sprite injection, print support (via deck.css).
+ * Public API: window.Deck = { go, next, prev, reveal, index, count, layout }.
+ */
+(function () {
+  'use strict';
+
+  var SLIDE_W = 1600;
+  var SLIDE_H = 900;
+  var FOOTER_BRAND = 'Finance Fundamentals for SEs';
+
+  /* ------------------------------------------------------------------
+   * Icon sprite: 24px grid, line icons, stroke comes from .icon (currentColor).
+   * Use: <svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>
+   * ------------------------------------------------------------------ */
+  var ICONS = {
+    'doc': '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h5M10 15h5M10 18h3"/>',
+    'scale': '<path d="M12 4v16M8 20h8M5 7h14"/><circle cx="12" cy="4.5" r="1"/><path d="M5 7 2.5 13M5 7l2.5 6M2.5 13a2.5 2.5 0 0 0 5 0z"/><path d="M19 7l-2.5 6M19 7l2.5 6M16.5 13a2.5 2.5 0 0 0 5 0z"/>',
+    'coins': '<ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v4c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6"/><path d="M5 10v4c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-4"/><path d="M5 14v4c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-4"/>',
+    'chart-up': '<path d="M4 4v16h16"/><path d="M7.5 15.5l3.5-4 3 2.5 5-6"/><path d="M15.5 8h3.5v3.5"/>',
+    'chart-down': '<path d="M4 4v16h16"/><path d="M7.5 8.5l3.5 4 3-2.5 5 6"/><path d="M15.5 16h3.5v-3.5"/>',
+    'cloud': '<path d="M7.5 18.5h9.5a4 4 0 0 0 .6-7.96 5.75 5.75 0 0 0-11.1 1A3.5 3.5 0 0 0 7.5 18.5z"/>',
+    'server': '<rect x="4" y="4" width="16" height="7" rx="1.5"/><rect x="4" y="13" width="16" height="7" rx="1.5"/><path d="M8 7.5h.01M8 16.5h.01M12 7.5h4M12 16.5h4"/>',
+    'chip': '<rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="10" y="10" width="4" height="4" rx=".5"/><path d="M10 3.5V7M14 3.5V7M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5"/>',
+    'calculator': '<rect x="5" y="3" width="14" height="18" rx="2"/><rect x="8" y="6" width="8" height="3.5" rx=".5"/><path d="M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 17h.01M12 17h.01M15.5 17h.01"/>',
+    'calendar': '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/>',
+    'search': '<circle cx="11" cy="11" r="6"/><path d="M15.5 15.5 20 20"/>',
+    'person': '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-6 7-6s6.2 2.4 7 6"/>',
+    'warning': '<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4M12 16.8h.01"/>',
+    'check': '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+    'check-circle': '<circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.8 2.8L16.2 9.6"/>',
+    'alert-circle': '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4h.01"/>',
+    'inference': '<circle cx="12" cy="12" r="9" stroke-dasharray="2.2 2.6"/><path d="M8.5 12h7M12.8 9.3 15.5 12l-2.7 2.7"/>',
+    'link': '<path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/>',
+    'external': '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    'arrow-right': '<path d="M4 12h15M14 7l5 5-5 5"/>',
+    'arrow-left': '<path d="M20 12H5M10 7l-5 5 5 5"/>',
+    'clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    'target': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    'chat': '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>'
+  };
+
+  function buildSprite() {
+    var s = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" ' +
+      'style="position:absolute;width:0;height:0;overflow:hidden" class="deck-sprite">';
+    Object.keys(ICONS).forEach(function (k) {
+      s += '<symbol id="i-' + k + '" viewBox="0 0 24 24">' + ICONS[k] + '</symbol>';
+    });
+    return s + '</svg>';
+  }
+
+  /* ------------------------------------------------------------------ */
+  var store = {
+    get: function (k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* storage blocked: ignore */ } }
+  };
+
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+
+  function onReady(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  onReady(function init() {
+    if (!document.getElementById('i-doc')) {
+      document.body.insertAdjacentHTML('afterbegin', buildSprite());
+    }
+
+    var deck = document.querySelector('.deck');
+    if (!deck) return;
+
+    // Wrap slides in a viewport box used for scaling.
+    var viewport = deck.querySelector('.deck__viewport');
+    if (!viewport) {
+      viewport = el('div', 'deck__viewport');
+      while (deck.firstChild) viewport.appendChild(deck.firstChild);
+      deck.appendChild(viewport);
+    }
+
+    var slides = Array.prototype.slice.call(viewport.querySelectorAll(':scope > .slide'));
+    var total = slides.length;
+    if (!total) return;
+    var moduleLabel = deck.getAttribute('data-module') || '';
+    var storeKey = 'ffse-deck:' + location.pathname;
+    var current = -1;
+
+    // Footer + a11y attributes per slide.
+    slides.forEach(function (slide, i) {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', (i + 1) + ' of ' + total);
+      slide.id = slide.id || ('slide-' + (i + 1));
+      if (slide.getAttribute('data-footer') === 'off' || slide.querySelector('.slide__footer')) return;
+      var f = el('footer', 'slide__footer');
+      f.innerHTML =
+        '<div class="slide__brand"><span class="wordmark">CloudZero</span>' +
+        '<span class="slide__brand-sep" aria-hidden="true"></span><span>' + FOOTER_BRAND + '</span></div>' +
+        '<div class="slide__meta"><span class="slide__module"></span>' +
+        '<span class="slide__page">' + pad(i + 1) + ' / ' + pad(total) + '</span></div>';
+      f.querySelector('.slide__module').textContent = moduleLabel;
+      slide.appendChild(f);
+    });
+
+    // Reveal blocks: any .answer or [data-reveal] gets a cover button.
+    var reveals = Array.prototype.slice.call(viewport.querySelectorAll('.answer, [data-reveal]'));
+    reveals.forEach(function (block) {
+      if (!block.classList.contains('answer')) block.classList.add('answer');
+      var label = block.getAttribute('data-reveal-label') || 'Reveal answer';
+      var btn = el('button', 'answer__cover');
+      btn.type = 'button';
+      btn.innerHTML = '<span></span><kbd>R</kbd>';
+      btn.firstChild.textContent = label;
+      btn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        setRevealed(block, true);
+      });
+      block.insertBefore(btn, block.firstChild);
+      block.setAttribute('aria-live', 'polite');
+    });
+
+    function setRevealed(block, on) {
+      block.classList.toggle('is-revealed', on);
+      var slide = block.closest('.slide');
+      if (slide) {
+        var any = slide.querySelector('.answer.is-revealed');
+        slide.classList.toggle('is-revealed', !!any);
+      }
+    }
+
+    function toggleReveal() {
+      var slide = slides[current];
+      var blocks = Array.prototype.slice.call(slide.querySelectorAll('.answer'));
+      if (!blocks.length) return;
+      var hidden = blocks.some(function (b) { return !b.classList.contains('is-revealed'); });
+      blocks.forEach(function (b) { setRevealed(b, hidden); });
+    }
+
+    // Screen UI.
+    var progress = el('div', 'deck-ui__progress', '<div class="deck-ui__bar"></div>');
+    progress.setAttribute('aria-hidden', 'true');
+    var ui = el('nav', 'deck-ui');
+    ui.setAttribute('aria-label', 'Slide navigation');
+    ui.innerHTML =
+      '<span class="deck-ui__title"></span>' +
+      '<div class="deck-ui__nav">' +
+      '<span class="deck-ui__hint">Arrows to move, R to reveal</span>' +
+      '<button type="button" class="deck-ui__btn" data-act="prev" aria-label="Previous slide">' +
+      '<svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button>' +
+      '<span class="deck-ui__count" aria-live="polite"></span>' +
+      '<button type="button" class="deck-ui__btn" data-act="next" aria-label="Next slide">' +
+      '<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>' +
+      '</div>';
+    ui.querySelector('.deck-ui__title').textContent = moduleLabel || document.title;
+    document.body.appendChild(progress);
+    document.body.appendChild(ui);
+    var bar = progress.firstChild;
+    var count = ui.querySelector('.deck-ui__count');
+    var prevBtn = ui.querySelector('[data-act="prev"]');
+    var nextBtn = ui.querySelector('[data-act="next"]');
+    prevBtn.addEventListener('click', function () { go(current - 1); });
+    nextBtn.addEventListener('click', function () { go(current + 1); });
+
+    function layout() {
+      var w = viewport.clientWidth;
+      var h = viewport.clientHeight;
+      if (!w || !h) return;
+      var s = Math.min(w / SLIDE_W, h / SLIDE_H);
+      deck.style.setProperty('--deck-scale', String(Math.max(s, 0.05)));
+    }
+
+    function writeHash(i) {
+      var h = '#' + (i + 1);
+      if (location.hash === h) return;
+      try { history.replaceState(null, '', h); }
+      catch (e) { try { location.hash = h; } catch (e2) { /* ignore */ } }
+    }
+
+    function go(i, opts) {
+      i = Math.max(0, Math.min(total - 1, i | 0));
+      if (i === current) return;
+      if (current >= 0) {
+        slides[current].classList.remove('is-active');
+        slides[current].setAttribute('aria-hidden', 'true');
+      }
+      current = i;
+      var s = slides[i];
+      s.classList.add('is-active');
+      s.removeAttribute('aria-hidden');
+      bar.style.width = ((i + 1) / total * 100) + '%';
+      count.textContent = (i + 1) + ' / ' + total;
+      prevBtn.disabled = i === 0;
+      nextBtn.disabled = i === total - 1;
+      if (!(opts && opts.fromHash)) writeHash(i);
+      store.set(storeKey, String(i));
+    }
+
+    function readHash() {
+      var m = /^#(\d+)$/.exec(location.hash || '');
+      return m ? parseInt(m[1], 10) - 1 : -1;
+    }
+
+    slides.forEach(function (s) { s.setAttribute('aria-hidden', 'true'); });
+    layout();
+    var start = readHash();
+    if (start < 0) {
+      var saved = parseInt(store.get(storeKey), 10);
+      start = isNaN(saved) ? 0 : saved;
+    }
+    go(start, { fromHash: readHash() >= 0 });
+    deck.classList.add('is-ready');
+
+    window.addEventListener('resize', layout);
+    window.addEventListener('orientationchange', layout);
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(viewport);
+    window.addEventListener('hashchange', function () {
+      var i = readHash();
+      if (i >= 0) go(i, { fromHash: true });
+    });
+
+    // Keyboard.
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      var onButton = t && /^(BUTTON|A)$/.test(t.tagName);
+      switch (e.key) {
+        case 'ArrowRight': case 'ArrowDown': case 'PageDown':
+          e.preventDefault(); go(current + 1); break;
+        case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+          e.preventDefault(); go(current - 1); break;
+        case ' ': case 'Spacebar':
+          if (onButton) return;
+          e.preventDefault(); go(current + (e.shiftKey ? -1 : 1)); break;
+        case 'Home': e.preventDefault(); go(0); break;
+        case 'End': e.preventDefault(); go(total - 1); break;
+        case 'r': case 'R': e.preventDefault(); toggleReveal(); break;
+        default: break;
+      }
+    });
+
+    // Click: left 30% of the slide goes back, the rest goes forward.
+    viewport.addEventListener('click', function (e) {
+      if (e.target.closest('a, button, input, select, textarea, label, summary, [data-no-nav], .answer')) return;
+      var sel = window.getSelection && window.getSelection();
+      if (sel && String(sel).length) return;
+      var r = slides[current].getBoundingClientRect();
+      var x = (e.clientX - r.left) / (r.width || 1);
+      go(current + (x < 0.3 ? -1 : 1));
+    });
+
+    // Swipe.
+    var tx = null, ty = null;
+    viewport.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) { tx = null; return; }
+      tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function (e) {
+      if (tx == null) return;
+      var dx = e.changedTouches[0].clientX - tx;
+      var dy = e.changedTouches[0].clientY - ty;
+      tx = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        e.preventDefault();
+        go(current + (dx < 0 ? 1 : -1));
+      }
+    });
+
+    window.Deck = {
+      go: function (n) { go(n); },
+      next: function () { go(current + 1); },
+      prev: function () { go(current - 1); },
+      reveal: toggleReveal,
+      index: function () { return current; },
+      count: total,
+      layout: layout
+    };
+  });
+})();
+
+</script>
+</body>
+</html>

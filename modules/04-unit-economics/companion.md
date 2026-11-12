@@ -67,7 +67,7 @@ This is why the course insists on one definition. Companies define LTV in severa
 
 ## Worked example 2: shared servers, different customers (Hypothetical)
 
-Three customers share one cluster that costs $30K a month. Allocation telemetry shows how much of the cluster each customer uses.
+Three customers share one cluster that costs $30K a month. Usage data shows how much of the cluster each customer uses.
 
 | Customer | Monthly price | Share of cluster usage | Allocated cost | Gross profit | Gross margin |
 | --- | --- | --- | --- | --- | --- |
@@ -138,7 +138,7 @@ Questions worth asking a finance buyer:
 
 Both stories come from the CloudZero demo story bank (Oct 28 2026), which draws on CloudZero's own customer pages. Every figure is vendor-reported and Unconfirmed. Use them as illustrations. Do not present them as independently verified results.
 
-**NinjaCat.** Story bank hook: "Seven AI and cloud bills, one answer: what does each customer cost us, and is our price right?" CloudZero's customer page describes NinjaCat as a 60-person SaaS company. It reports a "40% reduction in cloud spend," "7 AI and cloud providers ingested" and "Unit costs used to refine pricing strategy." *Unconfirmed, vendor-reported.* These figures have not been checked against any NinjaCat source or an independent source. The demo pattern: AI Signals shows AI spend next to cloud spend, then the same dimensions give cost per customer. The CloudZero docs say AI Signals costs are estimates based on token volume at published rates. They can differ from billing data. Say so in the demo.
+**NinjaCat.** Story bank hook: "Seven AI and cloud bills, one answer: what does each customer cost us, and is our price right?" CloudZero's customer page describes NinjaCat as a 60-person SaaS company. It reports a "40% reduction in cloud spend," "7 AI and cloud providers ingested" and "Unit costs used to refine pricing strategy." *Unconfirmed, vendor-reported.* These figures have not been checked against any NinjaCat source or an independent source.
 
 **Beamable.** Story bank hook: "Same servers, different customers. Which ones lose you money?" CloudZero's customer page says Beamable "measured cost per service per game per customer" and "refined customer pricing models." The page gives no dollar figures. *Unconfirmed, vendor-reported.* Worked example 2 is a hypothetical calculation of this situation, not Beamable data.
 
@@ -249,14 +249,6 @@ Verification: each link was checked with curl on Nov 12 2026 using a browser-sty
 - CloudZero, Beamable customer story: <https://www.cloudzero.com/customers/beamable/> (200)
 - CloudZero, Malwarebytes customer story, a backup unit economics story: <https://www.cloudzero.com/customers/malwarebytes/> (200)
 - CloudZero demo story bank, Oct 28 2026 (internal, Notion page 408c5db676d881318a07ca8ff3f5824e), entries F2 (NinjaCat) and E2 (Beamable).
-- CloudZero docs, Unit Economics: <https://docs.cloudzero.com/docs/unit-economics> (200)
-- CloudZero docs, Telemetry streams: <https://docs.cloudzero.com/docs/telemetry-streams> (200)
-- CloudZero docs, Splitting shared costs: <https://docs.cloudzero.com/docs/splitting-shared-costs> (200)
-- CloudZero docs, AI Signals: <https://docs.cloudzero.com/docs/real-time-ai-spend-with-ai-signals> (200)
-
-**Extra reading**
-
-- FinOps Foundation, Unit Economics capability: <https://www.finops.org/framework/capabilities/unit-economics/> (200)
 
 **Dropped**
 
