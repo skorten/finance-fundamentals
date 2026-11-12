@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Capex, Opex, Capitalization</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Module 3 of Finance Fundamentals for SEs: capex, opex, capitalized software and amortization, with Datadog as the running example.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../template/deck.css">
+</head>
+<body>
+<main class="deck" data-module="Module 3 · Capex, opex, capitalization">
+
+  <!-- 1. TITLE -->
+  <section class="slide slide--title">
+    <p class="title__module"><b>Module 03</b> Finance Fundamentals for SEs</p>
+    <div class="title__main">
+      <h1 class="hero">Capex, opex and <em>capitalization</em></h1>
+      <p class="title__promise">Spot when capitalization comes up, then bring in finance.</p>
+    </div>
+    <div class="title__meta">
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>20 min</span>
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Companion doc included</span>
+    </div>
+  </section>
+
+  <!-- 2. GOALS -->
+  <section class="slide slide--agenda">
+    <header class="slide__head">
+      <p class="eyebrow">Learning goals</p>
+      <h2 class="headline">Three things you will do after this</h2>
+    </header>
+    <div class="slide__body">
+      <ul class="goals">
+        <li class="card">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <h3 class="card__title">Explain capex vs opex</h3>
+          <p class="card__text">Why cloud moved spend to opex.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+          <h3 class="card__title">Trace capitalized cost</h3>
+          <p class="card__text">Find it in a 10-K and follow it.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>
+          <h3 class="card__title">Know when to hand off</h3>
+          <p class="card__text">Name the rules. Bring in finance.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. CAPEX VS OPEX -->
+  <section class="slide slide--compare">
+    <header class="slide__head">
+      <p class="eyebrow">Capex vs opex</p>
+      <h2 class="headline">Cloud turned a purchase into a meter</h2>
+    </header>
+    <div class="slide__body">
+      <div class="versus">
+        <div class="card versus__side">
+          <div class="versus__head">
+            <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span>
+            <h3 class="card__title">Capex</h3>
+          </div>
+          <p class="card__text">Buy servers. Expense them over their useful life.</p>
+          <figure class="versus__mini">
+            <svg viewBox="0 0 520 150" role="img" aria-label="Capex drawn as a building: one purchase, then equal expense bars over five years">
+              <rect x="12" y="30" width="76" height="86" rx="4" class="svg-surface-2"/>
+              <rect x="12" y="30" width="76" height="86" rx="4" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+              <rect x="24" y="44" width="16" height="16" class="svg-accent"/>
+              <rect x="60" y="44" width="16" height="16" class="svg-accent"/>
+              <rect x="24" y="72" width="16" height="16" class="svg-accent"/>
+              <rect x="60" y="72" width="16" height="16" class="svg-accent"/>
+              <rect x="42" y="96" width="16" height="20" class="svg-accent"/>
+              <text x="50" y="142" text-anchor="middle" class="svg-mono">BUY ONCE</text>
+              <path d="M104 92h60M156 84l8 8-8 8" fill="none" class="svg-stroke-2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="196" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="256" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="316" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="376" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <rect x="436" y="92" width="48" height="24" rx="4" class="svg-accent"/>
+              <text x="196" y="70" class="svg-label">Depreciation each year</text>
+              <text x="340" y="142" text-anchor="middle" class="svg-mono">YEARS 1 TO 5</text>
+            </svg>
+          </figure>
+        </div>
+        <span class="versus__vs" aria-hidden="true">vs</span>
+        <div class="card versus__side versus__side--b">
+          <div class="versus__head">
+            <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-cloud"/></svg></span>
+            <h3 class="card__title">Opex</h3>
+          </div>
+          <p class="card__text">Rent by the hour. Expense it the month you use it.</p>
+          <figure class="versus__mini">
+            <svg viewBox="0 0 520 150" role="img" aria-label="Opex drawn as a utility meter with monthly expense bars that vary with use">
+              <circle cx="52" cy="70" r="42" class="svg-surface-2"/>
+              <circle cx="52" cy="70" r="42" class="svg-teal-stroke" stroke-width="3" fill="none"/>
+              <path d="M52 70 L72 46" class="svg-stroke" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <circle cx="52" cy="70" r="5" class="svg-ink"/>
+              <text x="52" y="142" text-anchor="middle" class="svg-mono">METER</text>
+              <g class="svg-teal">
+                <rect x="140" y="80" width="22" height="36" rx="3"/>
+                <rect x="172" y="70" width="22" height="46" rx="3"/>
+                <rect x="204" y="84" width="22" height="32" rx="3"/>
+                <rect x="236" y="62" width="22" height="54" rx="3"/>
+                <rect x="268" y="72" width="22" height="44" rx="3"/>
+                <rect x="300" y="56" width="22" height="60" rx="3"/>
+                <rect x="332" y="66" width="22" height="50" rx="3"/>
+                <rect x="364" y="50" width="22" height="66" rx="3"/>
+                <rect x="396" y="60" width="22" height="56" rx="3"/>
+                <rect x="428" y="46" width="22" height="70" rx="3"/>
+                <rect x="460" y="54" width="22" height="62" rx="3"/>
+              </g>
+              <text x="140" y="30" class="svg-label">Expensed as it is used</text>
+              <text x="140" y="142" class="svg-mono">MONTH BY MONTH</text>
+            </svg>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FLOW -->
+  <section class="slide slide--flow">
+    <header class="slide__head">
+      <p class="eyebrow">Capitalization</p>
+      <h2 class="headline">Capitalized cost waits on the balance sheet</h2>
+    </header>
+    <div class="slide__body">
+      <ol class="flow" aria-label="Four steps: development cost, asset on the balance sheet, amortization, expense on the income statement">
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>
+          <span class="flow__title">Cost</span>
+          <span class="flow__text">Engineers get paid</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">approved</span>
+        </li>
+        <li class="flow__step flow__step--key">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <span class="flow__title">Asset</span>
+          <span class="flow__text">Balance sheet, not expense</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">spread</span>
+        </li>
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+          <span class="flow__title">Useful life</span>
+          <span class="flow__text">Equal share each year</span>
+        </li>
+        <li class="flow__arrow" aria-hidden="true">
+          <svg viewBox="0 0 72 24"><path d="M2 12h64M58 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flow__arrow-label">booked</span>
+        </li>
+        <li class="flow__step">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-chart-down"/></svg></span>
+          <span class="flow__title">P&amp;L</span>
+          <span class="flow__text">Expense hits income</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. SELF-CHECK 1 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 1 · Illustrative</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">A company capitalizes $600K of development labor. It amortizes straight-line over three years. What expense hits each year?</h2>
+      <ol class="options">
+        <li class="option"><span class="option__key">A</span>$100K</li>
+        <li class="option is-correct"><span class="option__key">B</span>$200K</li>
+        <li class="option"><span class="option__key">C</span>$600K</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>B. $200K.</strong> $600K ÷ 3 = $200K a year. After year 1 the asset is worth $400K. Expensing it would add $400K to year 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CHART -->
+  <section class="slide slide--chart">
+    <header class="slide__head">
+      <p class="eyebrow">Amortization staircase</p>
+      <h2 class="headline">The asset steps down $200K a year</h2>
+    </header>
+    <div class="slide__body">
+      <div class="chart-layout">
+        <figure class="viz">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="m3-wf-title m3-wf-desc">
+            <title id="m3-wf-title">Amortization of a $600K asset over three years</title>
+            <desc id="m3-wf-desc">Illustrative. Asset value starts at 600 thousand dollars. It falls to 400, 200 and 0 thousand at the end of years 1, 2 and 3. Each year 200 thousand moves to expense.</desc>
+            <g class="viz-grid">
+              <line x1="80" y1="60" x2="1000" y2="60"/>
+              <line x1="80" y1="200" x2="1000" y2="200"/>
+              <line x1="80" y1="340" x2="1000" y2="340"/>
+            </g>
+            <line x1="80" y1="480" x2="1000" y2="480" class="viz-axis"/>
+            <g class="viz-tick" text-anchor="end">
+              <text x="64" y="66">$600K</text>
+              <text x="64" y="206">$400K</text>
+              <text x="64" y="346">$200K</text>
+              <text x="64" y="486">$0</text>
+            </g>
+            <rect class="bar viz-total" x="128" y="60" width="150" height="420" rx="4"><title>Start: asset $600K</title></rect>
+            <rect class="bar viz-total" x="358" y="200" width="150" height="280" rx="4"><title>End of year 1: asset $400K</title></rect>
+            <rect class="bar viz-decrease" x="358" y="60" width="150" height="140" rx="4"><title>Year 1 expense: $200K</title></rect>
+            <rect class="bar viz-total" x="588" y="340" width="150" height="140" rx="4"><title>End of year 2: asset $200K</title></rect>
+            <rect class="bar viz-decrease" x="588" y="200" width="150" height="140" rx="4"><title>Year 2 expense: $200K</title></rect>
+            <rect class="bar viz-decrease" x="818" y="340" width="150" height="140" rx="4"><title>Year 3 expense: $200K</title></rect>
+            <g text-anchor="middle" style="font-family:var(--font-display);font-weight:600;font-size:26px">
+              <text x="203" y="280" style="fill:var(--slide-bg)">$600K</text>
+              <text x="433" y="346" style="fill:var(--slide-bg)">$400K</text>
+              <text x="433" y="140" class="svg-ink">$200K</text>
+              <text x="663" y="416" style="fill:var(--slide-bg)">$200K</text>
+              <text x="663" y="280" class="svg-ink">$200K</text>
+              <text x="893" y="416" class="svg-ink">$200K</text>
+            </g>
+            <g class="viz-cat" text-anchor="middle">
+              <text x="203" y="516">Start</text>
+              <text x="433" y="516">End of year 1</text>
+              <text x="663" y="516">End of year 2</text>
+              <text x="893" y="516">End of year 3</text>
+            </g>
+            <g class="viz-tick" text-anchor="middle">
+              <text x="893" y="546">asset is $0</text>
+            </g>
+          </svg>
+          <table class="sr-only">
+            <caption>Illustrative amortization of a $600K asset</caption>
+            <tr><th scope="col">Point in time</th><th scope="col">Asset value</th><th scope="col">Expense that year</th></tr>
+            <tr><td>Start</td><td>$600K</td><td>none</td></tr>
+            <tr><td>End of year 1</td><td>$400K</td><td>$200K</td></tr>
+            <tr><td>End of year 2</td><td>$200K</td><td>$200K</td></tr>
+            <tr><td>End of year 3</td><td>$0</td><td>$200K</td></tr>
+          </table>
+          <div class="legend">
+            <span class="legend__item"><span class="legend__swatch"></span>Asset left</span>
+            <span class="legend__item"><span class="legend__swatch legend__swatch--decrease"></span>Expensed that year</span>
+          </div>
+        </figure>
+        <aside class="callout">
+          <p class="eyebrow">Each year</p>
+          <p class="callout__value">$200K</p>
+          <p class="callout__label">$600K ÷ 3 years</p>
+          <p class="source">Illustrative figures</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DIVIDER -->
+  <section class="slide slide--divider">
+    <p class="eyebrow">Part 2</p>
+    <h2 class="hero">Datadog shows it in real numbers</h2>
+    <p class="lede">FY2025 Form 10-K, filed with the SEC.</p>
+    <span class="divider__part" aria-hidden="true">02</span>
+  </section>
+
+  <!-- 8. STAT -->
+  <section class="slide slide--stat">
+    <p class="eyebrow">Datadog FY2025</p>
+    <div class="stat">
+      <p class="stat__value">$85.8<small>M</small></p>
+      <p class="stat__label">of software development cost capitalized in FY2025, up from $60.8M</p>
+    </div>
+    <div class="stat__foot">
+      <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed, primary filing</span>
+      <p class="source">Source: Datadog, Inc. Form 10-K for FY2025. Cash flow statement, investing activities.</p>
+    </div>
+  </section>
+
+  <!-- 9. THREE STATEMENTS -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">One cost shows up on all three statements</h2>
+        </header>
+        <ul class="bullets">
+          <li>Cash leaves when engineers are paid</li>
+          <li>The asset stays on the balance sheet</li>
+          <li>Amortization returns it as expense</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="Datadog FY2025: 85.8 million in investing cash flow, 329.1 million gross asset on the balance sheet, then amortization in cost of revenue and sales and marketing">
+          <defs>
+            <marker id="m3-ah-stmt" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" class="svg-ink-3"/>
+            </marker>
+          </defs>
+          <rect x="16" y="16" width="608" height="122" rx="16" class="svg-surface"/>
+          <text x="40" y="52" class="svg-mono">CASH FLOW · INVESTING</text>
+          <text x="40" y="104" class="svg-label-strong" style="font-size:44px">($85.8M)</text>
+          <text x="600" y="104" text-anchor="end" class="svg-label">paid in FY2025</text>
+          <path d="M320 138 V176" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m3-ah-stmt)"/>
+          <rect x="16" y="180" width="608" height="122" rx="16" class="svg-teal-soft"/>
+          <text x="40" y="216" class="svg-mono">BALANCE SHEET · GROSS</text>
+          <text x="40" y="268" class="svg-label-strong" style="font-size:44px">$329.1M</text>
+          <text x="600" y="268" text-anchor="end" class="svg-label">at December 31</text>
+          <path d="M320 302 V340" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m3-ah-stmt)"/>
+          <rect x="16" y="344" width="608" height="122" rx="16" class="svg-accent-soft"/>
+          <text x="40" y="380" class="svg-mono">INCOME STATEMENT</text>
+          <text x="40" y="432" class="svg-label-strong" style="font-size:40px">Amortization</text>
+          <text x="600" y="432" text-anchor="end" class="svg-label">in COGS and S&amp;M</text>
+        </svg>
+        <figcaption>Datadog FY2025. The $329.1M is before accumulated amortization.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 10. USEFUL LIFE -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">A longer life means a smaller yearly charge</h2>
+        </header>
+        <ul class="bullets">
+          <li>Datadog raised useful life from two to three years</li>
+          <li>Effective FY2025, same cost</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="The same total cost drawn as two equal segments over two years, then three smaller segments over three years">
+          <text x="40" y="100" class="svg-mono">OLD LIFE · 2 YEARS</text>
+          <rect x="40" y="120" width="280" height="80" rx="8" class="svg-teal-soft"/>
+          <rect x="40" y="120" width="280" height="80" rx="8" class="svg-teal-stroke" stroke-width="2" fill="none"/>
+          <rect x="320" y="120" width="280" height="80" rx="8" class="svg-teal-soft"/>
+          <rect x="320" y="120" width="280" height="80" rx="8" class="svg-teal-stroke" stroke-width="2" fill="none"/>
+          <text x="180" y="170" text-anchor="middle" class="svg-label">Year 1</text>
+          <text x="460" y="170" text-anchor="middle" class="svg-label">Year 2</text>
+          <text x="40" y="260" class="svg-mono">NEW LIFE · 3 YEARS</text>
+          <rect x="40" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="40" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <rect x="227" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="227" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <rect x="414" y="280" width="186" height="80" rx="8" class="svg-accent-soft"/>
+          <rect x="414" y="280" width="186" height="80" rx="8" class="svg-accent-stroke" stroke-width="2" fill="none"/>
+          <text x="133" y="330" text-anchor="middle" class="svg-label">Year 1</text>
+          <text x="320" y="330" text-anchor="middle" class="svg-label">Year 2</text>
+          <text x="507" y="330" text-anchor="middle" class="svg-label">Year 3</text>
+          <path d="M40 400 H600 M40 390 V410 M600 390 V410" class="svg-stroke-2" stroke-width="2" fill="none"/>
+          <text x="320" y="446" text-anchor="middle" class="svg-label-strong" style="font-size:26px">Same total cost</text>
+        </svg>
+        <figcaption>Illustrative. The 10-K does not state the dollar effect.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 11. ASU 2025-06 -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed</span>
+          <h2 class="headline">The new ASU moves the starting line</h2>
+        </header>
+        <ul class="bullets">
+          <li>Project stages are gone</li>
+          <li>Start when funded and completion is probable</li>
+          <li>Early adoption is permitted</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="Old model: expense, capitalize, expense by project stage. New model: expense until management funds the project and completion is probable, then capitalize.">
+          <text x="40" y="60" class="svg-mono">OLD MODEL · PROJECT STAGES</text>
+          <rect x="40" y="76" width="150" height="90" rx="8" class="svg-surface-2"/>
+          <rect x="190" y="76" width="220" height="90" rx="8" class="svg-teal-soft"/>
+          <rect x="410" y="76" width="190" height="90" rx="8" class="svg-surface-2"/>
+          <text x="115" y="116" text-anchor="middle" class="svg-label">Plan</text>
+          <text x="300" y="116" text-anchor="middle" class="svg-label">Build</text>
+          <text x="505" y="116" text-anchor="middle" class="svg-label">Run</text>
+          <text x="115" y="148" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="300" y="148" text-anchor="middle" class="svg-mono">CAPITALIZE</text>
+          <text x="505" y="148" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="40" y="262" class="svg-mono">NEW MODEL · ONE THRESHOLD</text>
+          <rect x="40" y="278" width="220" height="90" rx="8" class="svg-surface-2"/>
+          <rect x="260" y="278" width="340" height="90" rx="8" class="svg-accent-soft"/>
+          <text x="150" y="318" text-anchor="middle" class="svg-label">Before</text>
+          <text x="430" y="318" text-anchor="middle" class="svg-label">After</text>
+          <text x="150" y="350" text-anchor="middle" class="svg-mono">EXPENSE</text>
+          <text x="430" y="350" text-anchor="middle" class="svg-mono">CAPITALIZE</text>
+          <path d="M260 268 V388" class="svg-accent-stroke" stroke-width="4" stroke-dasharray="8 6" fill="none"/>
+          <text x="260" y="424" text-anchor="middle" class="svg-label-strong" style="font-size:22px">Funded and probable</text>
+        </svg>
+        <figcaption>Issued Sept 2025. Effective for annual periods beginning after Dec 15, 2027.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 12. CFO -->
+  <section class="slide slide--quote">
+    <header class="slide__head">
+      <span class="badge badge--inference"><svg class="icon" aria-hidden="true"><use href="#i-inference"/></svg>Inference</span>
+      <h2 class="headline">Controllers ask whether it survives an audit</h2>
+    </header>
+    <div class="slide__body">
+      <div class="hears">
+        <div class="card hears__say">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>You hear</p>
+          <p class="card__text">“We capitalize engineering labor.”</p>
+        </div>
+        <div class="hears__arrow" aria-hidden="true">
+          <svg viewBox="0 0 80 32"><path d="M2 16h72M64 6l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <blockquote class="hears__cfo">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg>The controller asks</p>
+          <p class="quote">Which work, which project, and can we prove it?</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. HAND OFF -->
+  <section class="slide slide--compare">
+    <header class="slide__head">
+      <p class="eyebrow">Hand off to finance</p>
+      <h2 class="headline">Recognize the topic, then hand off</h2>
+    </header>
+    <div class="slide__body">
+      <div class="versus">
+        <div class="card versus__side">
+          <div class="versus__head">
+            <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+            <h3 class="card__title">You</h3>
+          </div>
+          <p class="card__text">Spot the topic. Ask questions. Bring in finance. Give no accounting advice.</p>
+        </div>
+        <span class="versus__vs" aria-hidden="true">then</span>
+        <div class="card versus__side versus__side--b">
+          <div class="versus__head">
+            <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+            <h3 class="card__title">Their finance team</h3>
+          </div>
+          <p class="card__text">Decides what to capitalize, the useful life, and whether it passes audit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. KEY TERMS -->
+  <section class="slide slide--terms">
+    <header class="slide__head">
+      <p class="eyebrow">Key terms</p>
+      <h2 class="headline">Six terms you will hear on calls</h2>
+    </header>
+    <div class="slide__body">
+      <dl class="terms">
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>Capex</dt>
+          <dd class="term__def">Spending on long lived assets, expensed gradually over their useful life.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-coins"/></svg>Opex</dt>
+          <dd class="term__def">Spending expensed in the period it happens, like a monthly cloud bill.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Capitalization</dt>
+          <dd class="term__def">Recording a cost as an asset instead of expensing it now.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>Amortization</dt>
+          <dd class="term__def">Spreading a software asset's cost over its useful life, evenly if straight-line.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>ASC 350-40</dt>
+          <dd class="term__def">US GAAP rules for software built or bought to run your own business.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>ASU 2025-06</dt>
+          <dd class="term__def">FASB update that changes when capitalizing internal-use software starts.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 15. SELF-CHECK 2 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 2 · Hypothetical</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">A company capitalizes $90M at the start of the year. How much higher is first-year operating income with a three year life than a two year life?</h2>
+      <ol class="options">
+        <li class="option is-correct"><span class="option__key">A</span>$15M</li>
+        <li class="option"><span class="option__key">B</span>$30M</li>
+        <li class="option"><span class="option__key">C</span>$45M</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>A. $15M.</strong> Two years is $45M a year. Three years is $30M. Total amortization stays $90M, spread over an extra year.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. SELF-CHECK 3 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 3</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">Which cost is possibly capitalizable, depending on company policy and finance's call?</h2>
+      <ol class="options">
+        <li class="option"><span class="option__key">A</span>Monthly production cloud bill</li>
+        <li class="option"><span class="option__key">B</span>Bug fixes in a shipped feature</li>
+        <li class="option is-correct"><span class="option__key">C</span>Salaries on an approved, funded feature</li>
+      </ol>
+      <div class="answer" data-reveal>
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>C.</strong> The cloud bill is opex. Bug fixes are usually expensed. Datadog capitalizes costs like C. Finance decides.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. RESOURCES -->
+  <section class="slide slide--resources">
+    <header class="slide__head">
+      <p class="eyebrow">Resources</p>
+      <h2 class="headline">Go deeper with these four sources</h2>
+    </header>
+    <div class="slide__body">
+      <div class="links">
+        <a class="link-card" href="https://corporatefinanceinstitute.com/resources/accounting/capex-vs-opex/" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Corporate Finance Institute</span>
+            <span class="link-card__title">CapEx vs OpEx</span>
+            <span class="link-card__desc">Plain guide to the two spending types.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://www.bakertilly.com/insights/modernizing-software-accounting-asu-2025-06" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Baker Tilly</span>
+            <span class="link-card__title">ASU 2025-06 explained</span>
+            <span class="link-card__desc">What changes and when it applies.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://dart.deloitte.com/USDART/home/codification/assets/asc350-40" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Deloitte DART</span>
+            <span class="link-card__title">ASC 350-40 guide</span>
+            <span class="link-card__desc">Free codification guide for finance readers.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://www.sec.gov/Archives/edgar/data/1561550/000162828026008819/ddog-20251231.htm" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">SEC EDGAR</span>
+            <span class="link-card__title">Datadog FY2025 10-K</span>
+            <span class="link-card__desc">See Note 2 and Note 5.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. RECAP -->
+  <section class="slide slide--recap">
+    <header class="slide__head">
+      <p class="eyebrow">Recap</p>
+      <h2 class="headline">Carry these into your next finance call</h2>
+    </header>
+    <div class="slide__body">
+      <div class="recap">
+        <ul class="takeaways">
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Tell capex from opex</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Trace capitalized cost across three statements</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Hand accounting calls to finance</li>
+        </ul>
+        <div class="card companion">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <h3 class="card__title">Companion document</h3>
+          <p class="card__text">Worked math, caveats, glossary and sources.</p>
+          <p class="companion__cta">companion.md, Module 03</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script src="../../template/deck.js"></script>
+</body>
+</html>

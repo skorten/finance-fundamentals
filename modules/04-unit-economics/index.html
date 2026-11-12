@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Unit Economics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Module 4 of Finance Fundamentals for SEs: unit cost, cost per customer, per-customer margin and LTV.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../template/deck.css">
+</head>
+<body>
+<main class="deck" data-module="Module 4 · Unit economics">
+
+  <!-- 1. TITLE -->
+  <section class="slide slide--title">
+    <p class="title__module"><b>Module 04</b> Finance Fundamentals for SEs</p>
+    <div class="title__main">
+      <h1 class="hero">What does each <em>customer</em> cost?</h1>
+      <p class="title__promise">Turn a cloud bill into profit per customer, the way a CFO asks.</p>
+    </div>
+    <div class="title__meta">
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>15 to 17 min</span>
+      <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Companion doc included</span>
+    </div>
+  </section>
+
+  <!-- 2. GOALS -->
+  <section class="slide slide--agenda">
+    <header class="slide__head">
+      <p class="eyebrow">Learning goals</p>
+      <h2 class="headline">Three things you will do after this</h2>
+    </header>
+    <div class="slide__body">
+      <ul class="goals">
+        <li class="card">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+          <h3 class="card__title">Define unit cost</h3>
+          <p class="card__text">Say why finance wants cost per customer.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-chart-down"/></svg></span>
+          <h3 class="card__title">Calculate one margin</h3>
+          <p class="card__text">Show how usage moves a customer's margin.</p>
+        </li>
+        <li class="card">
+          <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg></span>
+          <h3 class="card__title">Question averages</h3>
+          <p class="card__text">Explain how LTV and blends hide losers.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. CONCEPT: one customer as a unit -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <p class="eyebrow">Unit economics</p>
+          <h2 class="headline">Finance wants profit on each customer</h2>
+        </header>
+        <ul class="bullets">
+          <li>Revenue comes in every month</li>
+          <li><strong>Cost to serve</strong> goes out: hosting and AI</li>
+          <li>What is left is gross profit</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="One customer pays 10 thousand dollars a month. Hosting costs 2.5 thousand and AI inference 1.5 thousand. Gross profit is 6 thousand, a 60 percent margin.">
+          <defs>
+            <marker id="m4-ah-one" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" class="svg-ink-3"/>
+            </marker>
+          </defs>
+          <!-- customer unit -->
+          <rect x="226" y="160" width="190" height="160" rx="18" class="svg-surface"/>
+          <circle cx="321" cy="214" r="20" class="svg-ink-3"/>
+          <path d="M283 276 C283 248 359 248 359 276 L359 284 L283 284z" class="svg-ink-3"/>
+          <text x="321" y="308" text-anchor="middle" class="svg-mono">ONE CUSTOMER</text>
+          <!-- revenue in -->
+          <path d="M12 240 L218 240" class="svg-teal-stroke" stroke-width="4" marker-end="url(#m4-ah-one)"/>
+          <text x="115" y="212" text-anchor="middle" class="svg-label-strong" style="font-size:30px">$10K</text>
+          <text x="115" y="274" text-anchor="middle" class="svg-mono">REVENUE IN</text>
+          <!-- costs out -->
+          <path d="M416 200 C 440 200, 440 105, 462 105" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m4-ah-one)"/>
+          <path d="M416 250 C 440 250, 440 245, 462 245" class="svg-stroke-2" stroke-width="2.5" marker-end="url(#m4-ah-one)"/>
+          <rect x="470" y="56" width="160" height="100" rx="14" class="svg-surface"/>
+          <text x="490" y="94" class="svg-mono">HOSTING</text>
+          <text x="490" y="136" class="svg-label-strong" style="font-size:34px">$2.5K</text>
+          <rect x="470" y="196" width="160" height="100" rx="14" class="svg-accent-soft"/>
+          <text x="490" y="234" class="svg-mono">AI INFERENCE</text>
+          <text x="490" y="276" class="svg-label-strong" style="font-size:34px">$1.5K</text>
+          <!-- profit -->
+          <path d="M321 322 L321 368" class="svg-teal-stroke" stroke-width="4" marker-end="url(#m4-ah-one)"/>
+          <rect x="196" y="376" width="250" height="84" rx="14" class="svg-teal-soft"/>
+          <text x="222" y="410" class="svg-mono">GROSS PROFIT</text>
+          <text x="222" y="445" class="svg-label-strong" style="font-size:32px">$6K · 60%</text>
+        </svg>
+        <figcaption>Illustrative. Hypothetical customer, per month.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4. FORMULA -->
+  <section class="slide slide--formula">
+    <header class="slide__head">
+      <p class="eyebrow">The formula</p>
+      <h2 class="headline">One customer's margin uses that customer's cost</h2>
+    </header>
+    <div class="slide__body">
+      <p class="formula" role="math" aria-label="Per-customer gross margin equals customer revenue minus cost to serve, divided by customer revenue">
+        <span class="formula__term formula__term--result">Margin</span>
+        <span class="formula__op">=</span>
+        <span class="formula__paren">(</span>
+        <span class="formula__term formula__term--teal">Revenue</span>
+        <span class="formula__op">−</span>
+        <span class="formula__term formula__term--accent">Cost to serve</span>
+        <span class="formula__paren">)</span>
+        <span class="formula__op">÷</span>
+        <span class="formula__term formula__term--teal">Revenue</span>
+      </p>
+      <div class="worked">
+        <p class="eyebrow">Worked example · Illustrative</p>
+        <p class="worked__row num">($10K <span class="op">−</span> $4K) <span class="op">÷</span> $10K <span class="op">=</span> <span class="result">60%</span></p>
+        <p class="worked__note">Cost to serve is $2.5K hosting plus $1.5K AI inference.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CHART: AI usage doubles -->
+  <section class="slide slide--chart">
+    <header class="slide__head">
+      <p class="eyebrow">Same price, more AI usage</p>
+      <h2 class="headline">Doubling AI usage cuts margin 15 points</h2>
+    </header>
+    <div class="slide__body">
+      <div class="chart-layout">
+        <figure class="viz">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="m4-c1-title m4-c1-desc">
+            <title id="m4-c1-title">Where one customer's $10K monthly price goes, before and after AI usage doubles</title>
+            <desc id="m4-c1-desc">Before: hosting 2.5K, AI inference 1.5K, gross profit 6K. After: hosting 2.5K, AI inference 3.0K, gross profit 4.5K. Margin falls from 60 percent to 45 percent.</desc>
+            <g class="viz-grid">
+              <line x1="80" y1="60" x2="1000" y2="60"/>
+              <line x1="80" y1="144" x2="1000" y2="144"/>
+              <line x1="80" y1="228" x2="1000" y2="228"/>
+              <line x1="80" y1="312" x2="1000" y2="312"/>
+              <line x1="80" y1="396" x2="1000" y2="396"/>
+            </g>
+            <line x1="80" y1="480" x2="1000" y2="480" class="viz-axis"/>
+            <g class="viz-tick" text-anchor="end">
+              <text x="64" y="66">$10K</text>
+              <text x="64" y="150">$8K</text>
+              <text x="64" y="234">$6K</text>
+              <text x="64" y="318">$4K</text>
+              <text x="64" y="402">$2K</text>
+              <text x="64" y="486">$0</text>
+            </g>
+            <!-- before -->
+            <rect class="bar viz-muted" x="200" y="375" width="230" height="105" rx="4"><title>Hosting: $2.5K</title></rect>
+            <rect class="bar viz-decrease" x="200" y="312" width="230" height="63" rx="4"><title>AI inference: $1.5K</title></rect>
+            <rect class="bar viz-total" x="200" y="60" width="230" height="252" rx="4"><title>Gross profit: $6.0K</title></rect>
+            <!-- after -->
+            <rect class="bar viz-muted" x="600" y="375" width="230" height="105" rx="4"><title>Hosting: $2.5K</title></rect>
+            <rect class="bar viz-decrease" x="600" y="249" width="230" height="126" rx="4"><title>AI inference: $3.0K</title></rect>
+            <rect class="bar viz-total" x="600" y="60" width="230" height="189" rx="4"><title>Gross profit: $4.5K</title></rect>
+            <!-- in-bar labels -->
+            <g class="viz-value" text-anchor="middle" style="fill:var(--slide-bg)">
+              <text x="315" y="196">$6.0K</text>
+              <text x="715" y="162">$4.5K</text>
+            </g>
+            <g class="viz-value" text-anchor="middle" style="fill:var(--slide-bg)">
+              <text x="315" y="351">$1.5K</text>
+              <text x="715" y="319">$3.0K</text>
+            </g>
+            <g class="viz-value" text-anchor="middle">
+              <text x="315" y="436">$2.5K</text>
+              <text x="715" y="436">$2.5K</text>
+            </g>
+            <g class="viz-cat" text-anchor="middle">
+              <text x="315" y="516">Before: 60% margin</text>
+              <text x="715" y="516">AI usage x2: 45% margin</text>
+            </g>
+          </svg>
+          <table class="sr-only">
+            <caption>One customer, $10K monthly price, illustrative</caption>
+            <tr><th scope="col">Line</th><th scope="col">Before</th><th scope="col">After AI usage doubles</th></tr>
+            <tr><td>Hosting</td><td>$2.5K</td><td>$2.5K</td></tr>
+            <tr><td>AI inference</td><td>$1.5K</td><td>$3.0K</td></tr>
+            <tr><td>Gross profit</td><td>$6.0K</td><td>$4.5K</td></tr>
+            <tr><td>Gross margin</td><td>60%</td><td>45%</td></tr>
+          </table>
+          <div class="legend">
+            <span class="legend__item"><span class="legend__swatch"></span>Gross profit</span>
+            <span class="legend__item"><span class="legend__swatch legend__swatch--decrease"></span>AI inference</span>
+            <span class="legend__item"><span class="legend__swatch" style="background:var(--viz-muted)"></span>Hosting</span>
+          </div>
+        </figure>
+        <aside class="callout">
+          <p class="eyebrow">New margin</p>
+          <p class="callout__value">45%</p>
+          <p class="callout__label">Price would need to reach $13.75K for 60%</p>
+          <p class="source">Illustrative figures</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. LTV line chart -->
+  <section class="slide slide--chart">
+    <header class="slide__head">
+      <p class="eyebrow">LTV on a gross-profit basis</p>
+      <h2 class="headline">LTV falls when cost to serve rises</h2>
+    </header>
+    <div class="slide__body">
+      <div class="chart-layout">
+        <figure class="viz">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="m4-c2-title m4-c2-desc">
+            <title id="m4-c2-title">Cumulative gross profit from one customer over 36 months</title>
+            <desc id="m4-c2-desc">Before the usage change the customer earns 6 thousand dollars a month in gross profit, 216 thousand over 36 months. After AI usage doubles at the same price it earns 4.5 thousand a month, 162 thousand over 36 months.</desc>
+            <g class="viz-grid">
+              <line x1="100" y1="60" x2="780" y2="60"/>
+              <line x1="100" y1="144" x2="780" y2="144"/>
+              <line x1="100" y1="228" x2="780" y2="228"/>
+              <line x1="100" y1="312" x2="780" y2="312"/>
+              <line x1="100" y1="396" x2="780" y2="396"/>
+            </g>
+            <line x1="100" y1="480" x2="780" y2="480" class="viz-axis"/>
+            <g class="viz-tick" text-anchor="end">
+              <text x="84" y="66">$250K</text>
+              <text x="84" y="150">$200K</text>
+              <text x="84" y="234">$150K</text>
+              <text x="84" y="318">$100K</text>
+              <text x="84" y="402">$50K</text>
+              <text x="84" y="486">$0</text>
+            </g>
+            <g class="viz-tick" text-anchor="middle">
+              <text x="100" y="512">0</text>
+              <text x="326.7" y="512">12</text>
+              <text x="553.3" y="512">24</text>
+              <text x="780" y="512">36 months</text>
+            </g>
+            <line x1="100" y1="480" x2="780" y2="117.1" stroke-width="5" stroke-linecap="round" style="stroke:var(--viz-1)" fill="none"/>
+            <line x1="100" y1="480" x2="780" y2="207.8" stroke-width="5" stroke-linecap="round" style="stroke:var(--viz-2)" fill="none"/>
+            <circle cx="780" cy="117.1" r="9" class="svg-teal"/>
+            <circle cx="780" cy="207.8" r="9" class="svg-accent"/>
+            <text x="800" y="118" class="viz-value">$216K</text>
+            <text x="800" y="142" class="viz-tick">Before</text>
+            <text x="800" y="209" class="viz-value">$162K</text>
+            <text x="800" y="233" class="viz-tick">AI usage x2</text>
+          </svg>
+          <table class="sr-only">
+            <caption>Cumulative gross profit, illustrative</caption>
+            <tr><th scope="col">Case</th><th scope="col">Monthly gross profit</th><th scope="col">LTV at 36 months</th></tr>
+            <tr><td>Before</td><td>$6.0K</td><td>$216K</td></tr>
+            <tr><td>AI usage doubles</td><td>$4.5K</td><td>$162K</td></tr>
+          </table>
+          <div class="legend">
+            <span class="legend__item"><span class="legend__swatch"></span>Before</span>
+            <span class="legend__item"><span class="legend__swatch legend__swatch--decrease"></span>AI usage doubles</span>
+          </div>
+        </figure>
+        <aside class="callout">
+          <p class="eyebrow">LTV drop</p>
+          <p class="callout__value">−$54K</p>
+          <p class="callout__label">Revenue based LTV reads $360K both times</p>
+          <p class="source">Illustrative. 36 month stay, $10K price.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DIVIDER -->
+  <section class="slide slide--divider">
+    <p class="eyebrow">Part 2</p>
+    <h2 class="hero">Averages hide who loses money</h2>
+    <p class="lede">One blended margin can mask a losing customer.</p>
+    <span class="divider__part" aria-hidden="true">02</span>
+  </section>
+
+  <!-- 8. DATADOG -->
+  <section class="slide slide--concept">
+    <div class="split">
+      <div class="split__text">
+        <header class="slide__head">
+          <span class="badge badge--confirmed"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Confirmed, Datadog FY2025 10-K</span>
+          <h2 class="headline">Datadog's average hides very different customers</h2>
+        </header>
+        <ul class="bullets">
+          <li>Average customer: $83.8K gross profit, 80% margin</li>
+          <li>4,310 customers carry 90% of ARR</li>
+          <li><strong>Inference:</strong> cost to serve differs too</li>
+        </ul>
+      </div>
+      <figure class="illo">
+        <svg viewBox="0 0 640 480" role="img" aria-label="About 13 percent of Datadog's 32,700 customers, those with ARR of 100 thousand dollars or more, account for 90 percent of ARR">
+          <text x="40" y="92" class="svg-mono">SHARE OF 32,700 CUSTOMERS</text>
+          <rect x="40" y="108" width="560" height="64" rx="8" class="svg-surface-2"/>
+          <rect x="40" y="108" width="74" height="64" rx="8" class="svg-teal"/>
+          <text x="77" y="148" text-anchor="middle" class="svg-label-strong" style="font-size:22px;fill:var(--slide-bg)">13%</text>
+          <text x="357" y="148" text-anchor="middle" class="svg-label-strong" style="font-size:22px">87%</text>
+          <text x="40" y="210" class="svg-label">4,310 customers at $100K ARR or more</text>
+          <text x="40" y="290" class="svg-mono">SHARE OF ARR</text>
+          <rect x="40" y="306" width="560" height="64" rx="8" class="svg-surface-2"/>
+          <rect x="40" y="306" width="504" height="64" rx="8" class="svg-teal"/>
+          <text x="292" y="346" text-anchor="middle" class="svg-label-strong" style="font-size:22px;fill:var(--slide-bg)">90%</text>
+          <text x="572" y="346" text-anchor="middle" class="svg-label-strong" style="font-size:22px">10%</text>
+          <text x="40" y="408" class="svg-label">The same group earns 90% of ARR</text>
+        </svg>
+        <figcaption>Source: Datadog FY2025 10-K. Customer shares are our arithmetic.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 9. CHART: shared cluster -->
+  <section class="slide slide--chart">
+    <header class="slide__head">
+      <p class="eyebrow">One $30K cluster, three customers</p>
+      <h2 class="headline">The biggest payer is the one losing money</h2>
+    </header>
+    <div class="slide__body">
+      <div class="chart-layout">
+        <figure class="viz">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="m4-c3-title m4-c3-desc">
+            <title id="m4-c3-title">Gross margin by customer after splitting a shared cluster by usage</title>
+            <desc id="m4-c3-desc">Customer A minus 7 percent, customer B 25 percent, customer C 40 percent. Blended margin 16.7 percent.</desc>
+            <g class="viz-grid">
+              <line x1="80" y1="60" x2="1000" y2="60"/>
+              <line x1="80" y1="130" x2="1000" y2="130"/>
+              <line x1="80" y1="200" x2="1000" y2="200"/>
+              <line x1="80" y1="270" x2="1000" y2="270"/>
+              <line x1="80" y1="340" x2="1000" y2="340"/>
+              <line x1="80" y1="480" x2="1000" y2="480"/>
+            </g>
+            <line x1="80" y1="410" x2="1000" y2="410" class="viz-axis"/>
+            <g class="viz-tick" text-anchor="end">
+              <text x="64" y="66">50%</text>
+              <text x="64" y="136">40%</text>
+              <text x="64" y="206">30%</text>
+              <text x="64" y="276">20%</text>
+              <text x="64" y="346">10%</text>
+              <text x="64" y="416">0%</text>
+              <text x="64" y="486">−10%</text>
+            </g>
+            <rect class="bar viz-decrease" x="128" y="410" width="150" height="49" rx="4"><title>Customer A: minus 7%</title></rect>
+            <rect class="bar viz-total" x="358" y="235" width="150" height="175" rx="4"><title>Customer B: 25%</title></rect>
+            <rect class="bar viz-total" x="588" y="130" width="150" height="280" rx="4"><title>Customer C: 40%</title></rect>
+            <rect class="bar viz-muted" x="818" y="293" width="150" height="117" rx="4"><title>Blended: 16.7%</title></rect>
+            <g class="viz-value" text-anchor="middle">
+              <text x="203" y="394">−7%</text>
+              <text x="433" y="219">25%</text>
+              <text x="663" y="114">40%</text>
+              <text x="893" y="277">16.7%</text>
+            </g>
+            <g class="viz-cat" text-anchor="middle">
+              <text x="203" y="516">Customer A</text>
+              <text x="433" y="516">Customer B</text>
+              <text x="663" y="516">Customer C</text>
+              <text x="893" y="516">All three</text>
+            </g>
+            <g class="viz-tick" text-anchor="middle">
+              <text x="203" y="546">pays $14K</text>
+              <text x="433" y="546">pays $12K</text>
+              <text x="663" y="546">pays $10K</text>
+              <text x="893" y="546">blended</text>
+            </g>
+          </svg>
+          <table class="sr-only">
+            <caption>Gross margin by customer, illustrative</caption>
+            <tr><th scope="col">Customer</th><th scope="col">Price</th><th scope="col">Usage share</th><th scope="col">Cost</th><th scope="col">Margin</th></tr>
+            <tr><td>A</td><td>$14K</td><td>50%</td><td>$15K</td><td>−7%</td></tr>
+            <tr><td>B</td><td>$12K</td><td>30%</td><td>$9K</td><td>25%</td></tr>
+            <tr><td>C</td><td>$10K</td><td>20%</td><td>$6K</td><td>40%</td></tr>
+            <tr><td>All three</td><td>$36K</td><td>100%</td><td>$30K</td><td>16.7%</td></tr>
+          </table>
+          <div class="legend">
+            <span class="legend__item"><span class="legend__swatch"></span>Earns a margin</span>
+            <span class="legend__item"><span class="legend__swatch legend__swatch--decrease"></span>Loses money</span>
+            <span class="legend__item"><span class="legend__swatch" style="background:var(--viz-muted)"></span>Blended</span>
+          </div>
+        </figure>
+        <aside class="callout">
+          <p class="eyebrow">Customer A</p>
+          <p class="callout__value">−7%</p>
+          <p class="callout__label">Pays most, costs $15K to serve</p>
+          <p class="source">Illustrative. Cluster split by usage share.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. HOW A CFO HEARS IT -->
+  <section class="slide slide--quote">
+    <header class="slide__head">
+      <span class="badge badge--inference"><svg class="icon" aria-hidden="true"><use href="#i-inference"/></svg>Inference</span>
+      <h2 class="headline">CFOs ask about cost per customer</h2>
+    </header>
+    <div class="slide__body">
+      <div class="hears">
+        <div class="card hears__say">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>You say</p>
+          <p class="card__text">“We reduce your cloud bill.”</p>
+        </div>
+        <div class="hears__arrow" aria-hidden="true">
+          <svg viewBox="0 0 80 32"><path d="M2 16h72M64 6l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <blockquote class="hears__cfo">
+          <p class="hears__who"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg>The CFO hears</p>
+          <p class="quote">Does our price cover each customer?</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. KEY TERMS -->
+  <section class="slide slide--terms">
+    <header class="slide__head">
+      <p class="eyebrow">Key terms</p>
+      <h2 class="headline">Six terms you will hear on every call</h2>
+    </header>
+    <div class="slide__body">
+      <dl class="terms">
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg>Unit cost</dt>
+          <dd class="term__def">Total cost for a period divided by the number of units.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>Cost to serve</dt>
+          <dd class="term__def">What it costs to deliver the service to one customer.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Customer margin</dt>
+          <dd class="term__def">Customer revenue minus their cost to serve, divided by revenue.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-coins"/></svg>Contribution margin</dt>
+          <dd class="term__def">Revenue minus variable costs, the ones that move with usage.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>CAC</dt>
+          <dd class="term__def">Sales and marketing spend needed to win one new customer.</dd>
+        </div>
+        <div class="card term">
+          <dt class="term__name"><svg class="icon" aria-hidden="true"><use href="#i-chart-up"/></svg>LTV</dt>
+          <dd class="term__def">Monthly gross profit times expected months. Match definitions before comparing.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 12. STORY: NinjaCat -->
+  <section class="slide slide--story">
+    <header class="slide__head">
+      <span class="badge badge--unconfirmed"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Unconfirmed, vendor-reported</span>
+      <h2 class="headline">NinjaCat used unit costs to refine pricing</h2>
+    </header>
+    <div class="slide__body">
+      <div class="story">
+        <div class="story__main">
+          <div class="story__customer">
+            <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-chip"/></svg></span>
+            <div>
+              <p class="story__name">NinjaCat</p>
+              <p class="story__sector">SaaS · about 60 people</p>
+            </div>
+          </div>
+          <p class="story__quote">Seven AI and cloud bills, one answer: what does each customer cost us?</p>
+          <p class="source">Source: CloudZero customer page and demo story bank. Not independently verified.</p>
+        </div>
+        <div class="story__metrics">
+          <div class="metric"><span class="metric__value metric__value--accent num">40%</span><span class="metric__label">reduction in cloud spend</span></div>
+          <div class="metric"><span class="metric__value num">7</span><span class="metric__label">AI and cloud providers ingested</span></div>
+          <div class="metric"><span class="metric__value num">Pricing</span><span class="metric__label">refined with unit costs</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. STORY: Beamable -->
+  <section class="slide slide--story">
+    <header class="slide__head">
+      <span class="badge badge--unconfirmed"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Unconfirmed, vendor-reported</span>
+      <h2 class="headline">Beamable measured cost per game and customer</h2>
+    </header>
+    <div class="slide__body">
+      <div class="story">
+        <div class="story__main">
+          <div class="story__customer">
+            <span class="icon-tile icon-tile--plain"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span>
+            <div>
+              <p class="story__name">Beamable</p>
+              <p class="story__sector">Game infrastructure · about 50 people</p>
+            </div>
+          </div>
+          <p class="story__quote">Same servers, different customers. Which ones lose you money?</p>
+          <p class="source">Source: CloudZero customer page and demo story bank. No dollar figures given.</p>
+        </div>
+        <div class="story__metrics">
+          <div class="metric"><span class="metric__value metric__value--accent num" style="font-size:52px">Service</span><span class="metric__label">cost measured per service</span></div>
+          <div class="metric"><span class="metric__value num" style="font-size:52px">Game</span><span class="metric__label">cost measured per game</span></div>
+          <div class="metric"><span class="metric__value num" style="font-size:52px">Customer</span><span class="metric__label">cost measured per customer, pricing refined</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. SELF-CHECK 1 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 1 of 2</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">A customer pays $10K a month and costs $4K to serve. AI usage doubles, price stays flat. New gross margin?</h2>
+      <ol class="options">
+        <li class="option"><span class="option__key">A</span>50%</li>
+        <li class="option is-correct"><span class="option__key">B</span>45%</li>
+        <li class="option"><span class="option__key">C</span>30%</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>B. 45%.</strong> AI cost rises to $3K, so cost to serve is $5.5K. ($10K − $5.5K) ÷ $10K = 45%.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. SELF-CHECK 2 -->
+  <section class="slide slide--check">
+    <header class="slide__head">
+      <p class="eyebrow">Self-check 2 of 2</p>
+    </header>
+    <div class="slide__body">
+      <h2 class="question">Three customers share a $30K cluster. Prices: A $14K, B $12K, C $10K. Usage: 50%, 30%, 20%. Who loses money?</h2>
+      <ol class="options">
+        <li class="option is-correct"><span class="option__key">A</span>Customer A</li>
+        <li class="option"><span class="option__key">B</span>Customer B</li>
+        <li class="option"><span class="option__key">C</span>Customer C</li>
+      </ol>
+      <div class="answer" data-reveal data-reveal-label="Show the math">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <p class="answer__text"><strong>A.</strong> A uses $15K of cost against $14K of revenue. B earns 25%, C earns 40%. The blend, 16.7%, hides it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. RESOURCES -->
+  <section class="slide slide--resources">
+    <header class="slide__head">
+      <p class="eyebrow">Resources</p>
+      <h2 class="headline">Go deeper with these four sources</h2>
+    </header>
+    <div class="slide__body">
+      <div class="links">
+        <a class="link-card" href="https://www.forentrepreneurs.com/saas-metrics-2/" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-chart-up"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">David Skok</span>
+            <span class="link-card__title">SaaS Metrics 2.0</span>
+            <span class="link-card__desc">CAC, LTV and months to recover CAC.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://a16z.com/16-startup-metrics/" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">a16z</span>
+            <span class="link-card__title">16 Startup Metrics</span>
+            <span class="link-card__desc">What investors track in SaaS companies.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://corporatefinanceinstitute.com/resources/accounting/contribution-margin-ratio/" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">Corporate Finance Institute</span>
+            <span class="link-card__title">Contribution Margin Ratio</span>
+            <span class="link-card__desc">Revenue less variable costs, explained.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="link-card" href="https://www.sec.gov/Archives/edgar/data/1561550/000162828026008819/ddog-20251231.htm" target="_blank" rel="noopener noreferrer">
+          <span class="icon-tile icon-tile--teal"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+          <span class="link-card__body">
+            <span class="link-card__source">SEC EDGAR</span>
+            <span class="link-card__title">Datadog FY2025 10-K</span>
+            <span class="link-card__desc">Customer counts, ARR and net retention.</span>
+          </span>
+          <svg class="icon link-card__go" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. RECAP -->
+  <section class="slide slide--recap">
+    <header class="slide__head">
+      <p class="eyebrow">Recap</p>
+      <h2 class="headline">Carry these into your next CFO call</h2>
+    </header>
+    <div class="slide__body">
+      <div class="recap">
+        <ul class="takeaways">
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Ask about cost per customer, not the bill</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Show how usage moves each margin</li>
+          <li class="takeaway"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>Match LTV definitions before comparing</li>
+        </ul>
+        <div class="card companion">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
+          <h3 class="card__title">Companion document</h3>
+          <p class="card__text">Worked math, caveats and Datadog details for this module.</p>
+          <p class="companion__cta">Module 04 companion, companion.md</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script src="../../template/deck.js"></script>
+</body>
+</html>
