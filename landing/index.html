@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FF - Finance Fundamentals for SEs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --orange: #FE552E;
+  --orange-ink: #C54F34;
+  --teal: #006884;
+  --page: #EAE7E1;
+  --surface: #FFFFFF;
+  --card: #F5F3F1;
+  --line: #DDD8D0;
+  --ink: #141414;
+  --ink-2: #403E3F;
+  --ink-3: #6B6869;
+  --hero-bg: #141414;
+  --hero-ink: #F5F3F1;
+  --hero-ink-2: #B3B3B2;
+  --hero-accent: #FF7A5C;
+  --tile-orange: #FFE6DE;
+  --tile-teal: #DDEFF3;
+  --ok: #1F7A3D; --ok-soft: #E1F2E6;
+  --caution: #8A5300; --caution-soft: #FFF0D1;
+  --infer: #006884; --infer-soft: #DDEFF3;
+  --font-display: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0E1416; --surface: #161B1D; --card: #1D2426; --line: #2C3436;
+    --ink: #F5F3F1; --ink-2: #D6D2CC; --ink-3: #A39F9A; --orange-ink: #FF7A5C;
+    --hero-bg: #0C2129; --tile-orange: #3A2019; --tile-teal: #12313A;
+    --ok: #6CCB8A; --ok-soft: #173322; --caution: #F0B95C; --caution-soft: #3A2C10;
+    --infer: #7CC6D8; --infer-soft: #12313A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0E1416; --surface: #161B1D; --card: #1D2426; --line: #2C3436;
+  --ink: #F5F3F1; --ink-2: #D6D2CC; --ink-3: #A39F9A; --orange-ink: #FF7A5C;
+  --hero-bg: #0C2129; --tile-orange: #3A2019; --tile-teal: #12313A;
+  --ok: #6CCB8A; --ok-soft: #173322; --caution: #F0B95C; --caution-soft: #3A2C10;
+  --infer: #7CC6D8; --infer-soft: #12313A; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 40px; } }
+
+.eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; display: flex; align-items: center; gap: 12px; color: var(--ink-3); margin: 0 0 16px; }
+.eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--orange); }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-ink); padding: 72px 0 64px; position: relative; overflow: hidden; }
+.hero .eyebrow { color: var(--hero-ink-2); }
+.hero h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; font-size: clamp(40px, 7vw, 84px); margin: 0 0 24px; max-width: 14ch; }
+.hero h1 em { font-style: normal; color: var(--orange); }
+.hero p.lede { font-size: clamp(18px, 2.2vw, 22px); color: var(--hero-ink-2); max-width: 46ch; margin: 0 0 36px; }
+.hero-art { position: absolute; right: -40px; bottom: -30px; width: 420px; opacity: .9; pointer-events: none; }
+@media (max-width: 900px) { .hero-art { display: none; } }
+.facts { display: flex; flex-wrap: wrap; gap: 12px; }
+.fact { font-family: var(--font-mono); font-size: 13px; letter-spacing: .06em; border: 1px solid #34312F; border-radius: 999px; padding: 8px 14px; color: var(--hero-ink); display: inline-flex; gap: 8px; align-items: center; }
+.fact svg { width: 16px; height: 16px; color: var(--hero-accent); }
+.cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; background: var(--orange); color: #141414; text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 10px; }
+.cta:hover { filter: brightness(1.05); }
+.cta:focus-visible, .module:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+
+/* Sections */
+section.block { padding: 64px 0 8px; }
+h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; font-size: clamp(28px, 4vw, 40px); margin: 0 0 16px; max-width: 22ch; }
+.why { display: grid; gap: 32px; grid-template-columns: 1fr; }
+@media (min-width: 860px) { .why { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+.why p { color: var(--ink-2); margin: 0 0 14px; max-width: 58ch; }
+.buyers { display: grid; gap: 12px; }
+.buyer { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; }
+.buyer .ic { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--tile-orange); color: var(--orange-ink); }
+.buyer .ic.teal { background: var(--tile-teal); color: var(--teal); }
+.buyer svg { width: 22px; height: 22px; }
+.buyer b { display: block; font-family: var(--font-display); font-size: 18px; }
+.buyer span { color: var(--ink-3); font-size: 15px; }
+
+/* Modules */
+.grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-top: 24px; }
+@media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+.module { position: relative; display: flex; flex-direction: column; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; text-decoration: none; color: var(--ink); transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; min-height: 270px; }
+.module:hover { transform: translateY(-2px); border-color: var(--orange); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+.module .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.module .num { font-family: var(--font-display); font-weight: 600; font-size: 48px; line-height: 1; color: var(--orange); letter-spacing: -0.03em; }
+.module .art { width: 72px; height: 56px; color: var(--teal); }
+.module h3 { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
+.module p { margin: 0; color: var(--ink-3); font-size: 15px; flex: 1; }
+.module .meta { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 14px; }
+.module .go { color: var(--orange-ink); display: inline-flex; gap: 6px; align-items: center; font-weight: 500; }
+.module .go svg { width: 14px; height: 14px; }
+
+/* How it works */
+.steps { display: grid; gap: 16px; grid-template-columns: 1fr; margin-top: 24px; }
+@media (min-width: 860px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+.step { background: var(--card); border-radius: 14px; padding: 20px; }
+.step svg { width: 28px; height: 28px; color: var(--orange-ink); margin-bottom: 10px; }
+.step b { display: block; font-family: var(--font-display); font-size: 17px; margin-bottom: 4px; }
+.step span { color: var(--ink-3); font-size: 15px; }
+.badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.badge { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; }
+.badge.ok { background: var(--ok-soft); color: var(--ok); }
+.badge.un { background: var(--caution-soft); color: var(--caution); }
+.badge.in { background: var(--infer-soft); color: var(--infer); }
+.legend { color: var(--ink-3); font-size: 15px; margin-top: 10px; max-width: 70ch; }
+
+footer { padding: 56px 0 48px; color: var(--ink-3); font-size: 14px; }
+footer .bar { border-top: 1px solid var(--line); padding-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+footer b { color: var(--ink); font-family: var(--font-display); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">CloudZero Sales Engineering · Self-paced course</p>
+    <h1>Finance Fundamentals for <em>Sales Engineers</em></h1>
+    <p class="lede">We sell to CFOs, controllers and FP&amp;A. This course teaches you how they read the numbers, so you can speak their language on every call.</p>
+    <div class="facts">
+      <span class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>About 90 minutes</span>
+      <span class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg>6 modules</span>
+      <span class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>Self-checks in every module</span>
+    </div>
+    <a class="cta" href="https://claude.ai/artifact/3Z6ANbrxt2uXBmm5uevsdJ" target="_blank" rel="noopener">Start with Module 1
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <svg class="hero-art" viewBox="0 0 420 320" aria-hidden="true">
+    <g fill="none" stroke="#34312F" stroke-width="1"><path d="M0 300H420M0 240H420M0 180H420M0 120H420M0 60H420"/></g>
+    <rect x="40" y="120" width="60" height="180" rx="6" fill="#00739A"/>
+    <rect x="120" y="120" width="60" height="50" rx="6" fill="#FE552E"/>
+    <rect x="200" y="170" width="60" height="30" rx="6" fill="#FE552E"/>
+    <rect x="280" y="200" width="60" height="100" rx="6" fill="#00739A"/>
+    <path d="M100 120H120M180 170H200M260 200H280" stroke="#9C9894" stroke-dasharray="4 4"/>
+  </svg>
+</header>
+
+<main>
+  <section class="block">
+    <div class="wrap why">
+      <div>
+        <p class="eyebrow">Why this course</p>
+        <h2>Finance buyers ask which line moves</h2>
+        <p>When you say "we cut your cloud bill," a CFO hears a different question: which line on which statement moves, and by how much? Cloud and AI spend often sits in cost of revenue, so it shapes gross margin, a number investors watch closely.</p>
+        <p>This course covers the finance ideas you need for that conversation. It uses a real public SaaS filing, Datadog's FY2025 10-K, as a running example. It covers finance concepts only, with no FinOps content.</p>
+      </div>
+      <div class="buyers" aria-label="The three finance buyers">
+        <div class="buyer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><div><b>CFO</b><span>Strategy, margins and investors</span></div></div>
+        <div class="buyer"><span class="ic teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg></span><div><b>Controller</b><span>Accurate books, close and audit</span></div></div>
+        <div class="buyer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><div><b>FP&amp;A</b><span>Plans, forecasts and variances</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="modules">
+    <div class="wrap">
+      <p class="eyebrow">The modules</p>
+      <h2>Six short modules, in order</h2>
+      <div class="grid">
+
+        <a class="module" href="https://claude.ai/artifact/3Z6ANbrxt2uXBmm5uevsdJ" target="_blank" rel="noopener">
+          <div class="top"><span class="num">01</span>
+            <svg class="art" viewBox="0 0 72 56" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="6" width="18" height="44" rx="3"/><rect x="27" y="6" width="18" height="44" rx="3"/><rect x="50" y="6" width="18" height="44" rx="3"/><path d="M8 16h10M8 22h10M31 16h10M31 22h10M54 16h10M54 22h10"/></svg></div>
+          <h3>The three financial statements</h3>
+          <p>Read the income statement, balance sheet and cash flow statement, and find the lines a CFO watches.</p>
+          <div class="meta"><span>10 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+        <a class="module" href="https://claude.ai/artifact/3aWQNSXpHhpCzCzEXhFcpd" target="_blank" rel="noopener">
+          <div class="top"><span class="num">02</span>
+            <svg class="art" viewBox="0 0 72 56" aria-hidden="true"><rect x="6" y="8" width="14" height="44" rx="2" fill="currentColor"/><rect x="24" y="8" width="14" height="10" rx="2" fill="#FE552E"/><rect x="42" y="18" width="14" height="6" rx="2" fill="#FE552E"/><rect x="60" y="24" width="10" height="28" rx="2" fill="currentColor"/></svg></div>
+          <h3>Gross margin and COGS</h3>
+          <p>See why cloud and AI bills land in cost of revenue, and how they move gross margin.</p>
+          <div class="meta"><span>20 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+        <a class="module" href="https://claude.ai/artifact/TGdPoC7G3qem7GnFfwPCUn" target="_blank" rel="noopener">
+          <div class="top"><span class="num">03</span>
+            <svg class="art" viewBox="0 0 72 56" aria-hidden="true"><rect x="6" y="6" width="16" height="46" rx="2" fill="currentColor"/><rect x="28" y="20" width="16" height="32" rx="2" fill="currentColor" opacity=".7"/><rect x="50" y="36" width="16" height="16" rx="2" fill="currentColor" opacity=".45"/><path d="M14 6V2M36 20v-4" stroke="#FE552E" stroke-width="2"/></svg></div>
+          <h3>Capex, opex, capitalization and amortization</h3>
+          <p>Learn how some software costs become assets, then expenses over time. Know when to bring in finance.</p>
+          <div class="meta"><span>20 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+        <a class="module" href="https://claude.ai/artifact/KpeWVE3HxLhKgovNJSDT4G" target="_blank" rel="noopener">
+          <div class="top"><span class="num">04</span>
+            <svg class="art" viewBox="0 0 72 56" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="36" cy="18" r="8"/><path d="M22 46c2-9 8-13 14-13s12 4 14 13"/><path d="M4 18h18M50 18h18" stroke="#FE552E"/></svg></div>
+          <h3>Unit economics and cost per customer</h3>
+          <p>Work out what each customer costs to serve, and why averages can hide the ones that lose money.</p>
+          <div class="meta"><span>15 to 17 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+        <a class="module" href="https://claude.ai/artifact/MRTGnyN8DHGA4nuMysYb5R" target="_blank" rel="noopener">
+          <div class="top"><span class="num">05</span>
+            <svg class="art" viewBox="0 0 72 56" fill="none" stroke-width="2" aria-hidden="true"><path d="M4 30H68" stroke="currentColor"/><path d="M4 40l12-4 12 2 12-8 12-10 16-8" stroke="#FE552E"/><path d="M4 50H68" stroke="currentColor" opacity=".4"/></svg></div>
+          <h3>Budgeting and variance</h3>
+          <p>Tell budget, forecast and actuals apart, and explain any variance in one sentence.</p>
+          <div class="meta"><span>10 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+        <a class="module" href="https://claude.ai/artifact/J7ytRWYkTL4KXVbdersDzb" target="_blank" rel="noopener">
+          <div class="top"><span class="num">06</span>
+            <svg class="art" viewBox="0 0 72 56" aria-hidden="true"><g fill="currentColor" opacity=".25"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="20" y="18" width="12" height="12" rx="2"/><rect x="36" y="18" width="12" height="12" rx="2"/><rect x="52" y="18" width="12" height="12" rx="2"/><rect x="4" y="34" width="12" height="12" rx="2"/><rect x="20" y="34" width="12" height="12" rx="2"/><rect x="36" y="34" width="12" height="12" rx="2"/><rect x="52" y="34" width="12" height="12" rx="2"/></g><rect x="4" y="18" width="12" height="12" rx="2" fill="#FE552E"/><rect x="52" y="34" width="12" height="12" rx="2" fill="currentColor"/><rect x="4" y="4" width="60" height="8" rx="2" fill="currentColor"/></svg></div>
+          <h3>The finance buyer's calendar and vocabulary</h3>
+          <p>Time your calls around close, audit and budget season, and use the words finance uses.</p>
+          <div class="meta"><span>15 min</span><span class="go">Open deck <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>Go at your own pace</h2>
+      <div class="steps">
+        <div class="step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><b>Move through slides</b><span>Use the arrow keys, space, a click or a swipe.</span></div>
+        <div class="step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></svg><b>Test yourself</b><span>Answer each self-check, then press R or click to see the answer.</span></div>
+        <div class="step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><b>Read further</b><span>Each module ends with free sources: SEC, CFI, Investopedia and more.</span></div>
+        <div class="step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><b>Do them in order</b><span>Each module builds on the one before it.</span></div>
+      </div>
+      <div class="badges" aria-label="Evidence labels">
+        <span class="badge ok">Confirmed</span><span class="badge un">Unconfirmed</span><span class="badge in">Inference</span>
+      </div>
+      <p class="legend">Every claim carries a label. Confirmed means checked against a primary source. Unconfirmed means one source only; customer story figures are vendor-reported. Inference means reasoning, not a sourced fact.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap bar">
+    <span><b>CloudZero</b> · Finance Fundamentals for SEs</span>
+    <span>Draft. Accuracy review by CloudZero finance pending.</span>
+  </div>
+</footer>
+
+</body>
+</html>

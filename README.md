@@ -17,12 +17,14 @@ A self-paced, 90 minute primer that teaches CloudZero Sales Engineers the financ
 
 ## Shareable links (claude.ai artifacts)
 
-- [FF - 1 Three Financial Statements](https://claude.ai/artifact/3Z6ANbrxt2uXBmm5uevsdJ)
-- [FF - 2 Gross Margin and COGS](https://claude.ai/artifact/3aWQNSXpHhpCzCzEXhFcpd)
-- [FF - 3 Capex, Opex, Capitalization](https://claude.ai/artifact/TGdPoC7G3qem7GnFfwPCUn)
-- [FF - 4 Unit Economics](https://claude.ai/artifact/KpeWVE3HxLhKgovNJSDT4G)
-- [FF - 5 Budgeting and Variance](https://claude.ai/artifact/MRTGnyN8DHGA4nuMysYb5R)
-- [FF - 6 Finance Buyer Calendar](https://claude.ai/artifact/J7ytRWYkTL4KXVbdersDzb)
+- [FF - Finance Fundamentals for SEs](https://claude.ai/artifact/ETtu7YUwq97FDgDQQJuJEM) (landing page, source in `landing/index.html`)
+
+- [FF - 1: Three Financial Statements](https://claude.ai/artifact/3Z6ANbrxt2uXBmm5uevsdJ)
+- [FF - 2: Gross Margin and COGS](https://claude.ai/artifact/3aWQNSXpHhpCzCzEXhFcpd)
+- [FF - 3: Capex, Opex, Capitalization](https://claude.ai/artifact/TGdPoC7G3qem7GnFfwPCUn)
+- [FF - 4: Unit Economics](https://claude.ai/artifact/KpeWVE3HxLhKgovNJSDT4G)
+- [FF - 5: Budgeting and Variance](https://claude.ai/artifact/MRTGnyN8DHGA4nuMysYb5R)
+- [FF - 6: Finance Buyer Calendar](https://claude.ai/artifact/J7ytRWYkTL4KXVbdersDzb)
 
 Artifacts are private until shared from each page's Share menu. To update one, rebuild and republish the same `dist/` file.
 
