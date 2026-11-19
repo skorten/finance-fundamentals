@@ -99,6 +99,7 @@
     var total = slides.length;
     if (!total) return;
     var moduleLabel = deck.getAttribute('data-module') || '';
+    var courseUrl = deck.getAttribute('data-course-url') || '';
     var storeKey = 'ffse-deck:' + location.pathname;
     var current = -1;
 
@@ -116,6 +117,14 @@
         '<div class="slide__meta"><span class="slide__module"></span>' +
         '<span class="slide__page">' + pad(i + 1) + ' / ' + pad(total) + '</span></div>';
       f.querySelector('.slide__module').textContent = moduleLabel;
+      if (courseUrl) {
+        var back = el('a', 'slide__course');
+        back.href = courseUrl;
+        back.target = '_blank';
+        back.rel = 'noopener';
+        back.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to course</span>';
+        f.querySelector('.slide__meta').insertBefore(back, f.querySelector('.slide__module'));
+      }
       slide.appendChild(f);
     });
 

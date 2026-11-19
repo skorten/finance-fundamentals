@@ -479,6 +479,17 @@ body {
 .slide__brand-sep { width: 1px; height: 18px; background: var(--line-strong); }
 .slide__meta { display: flex; align-items: center; gap: var(--sp-3); }
 .slide__page { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.slide__course {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent-ink); text-decoration: none; font-weight: var(--fw-medium);
+  padding: 4px 10px; margin: -4px 0; border: 1px solid currentColor; border-radius: 999px;
+}
+.slide__course svg { width: 14px; height: 14px; }
+.slide__course:hover { background: var(--accent-soft); }
+.slide__course:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.slide--dark .slide__course, .slide--title .slide__course, .slide--divider .slide__course { color: var(--dark-accent-ink); }
+.slide--dark .slide__course:hover, .slide--title .slide__course:hover, .slide--divider .slide__course:hover { background: transparent; text-decoration: underline; }
+@media print { .slide__course { display: none; } }
 
 /* =====================================================================
    1. Title slide (dark)
@@ -1054,7 +1065,7 @@ body {
 </style>
 </head>
 <body>
-<main class="deck" data-module="Module 2 · Gross margin and COGS">
+<main class="deck" data-module="Module 2 · Gross margin and COGS" data-course-url="https://claude.ai/artifact/ETtu7YUwq97FDgDQQJuJEM">
 
   <!-- 1. TITLE -->
   <section class="slide slide--title">
@@ -1701,6 +1712,7 @@ body {
     var total = slides.length;
     if (!total) return;
     var moduleLabel = deck.getAttribute('data-module') || '';
+    var courseUrl = deck.getAttribute('data-course-url') || '';
     var storeKey = 'ffse-deck:' + location.pathname;
     var current = -1;
 
@@ -1718,6 +1730,14 @@ body {
         '<div class="slide__meta"><span class="slide__module"></span>' +
         '<span class="slide__page">' + pad(i + 1) + ' / ' + pad(total) + '</span></div>';
       f.querySelector('.slide__module').textContent = moduleLabel;
+      if (courseUrl) {
+        var back = el('a', 'slide__course');
+        back.href = courseUrl;
+        back.target = '_blank';
+        back.rel = 'noopener';
+        back.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to course</span>';
+        f.querySelector('.slide__meta').insertBefore(back, f.querySelector('.slide__module'));
+      }
       slide.appendChild(f);
     });
 
